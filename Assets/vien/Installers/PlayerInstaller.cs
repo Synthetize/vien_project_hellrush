@@ -15,8 +15,11 @@ public class PlayerInstaller : MonoInstaller<PlayerInstaller>
                  .AsSingle()
                  .NonLazy();
          AutoBindCinemachineCameras();
-        
-        //PlayerBindings();
+
+        Container.Bind<Weapon>()
+                 .FromComponentInHierarchy()
+                 .AsSingle()
+                 .NonLazy();
     }
 
     private void PlayerBindings()

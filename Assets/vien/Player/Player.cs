@@ -4,22 +4,26 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(FPController))]
 public class Player : MonoBehaviour
 {
-    public FPController controller;
+    private FPController controller;
+    private Weapon weapon;
 
     void Awake()
     {
         if (controller == null)
         {
+
             controller = GetComponent<FPController>();
+            weapon = GetComponent<Weapon>();
+
         }
     }
 
-	void Start()
-	{
-		Cursor.lockState = CursorLockMode.Locked;
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-	}
-	void OnMove(InputValue value)
+    }
+    void OnMove(InputValue value)
     {
         controller.MoveInput = value.Get<Vector2>();
     }
@@ -41,4 +45,14 @@ public class Player : MonoBehaviour
             controller.TryJump();
         }
     }
+
+    void OnAttack(InputValue v)
+    {
+        weapon.SetFiring(v.isPressed);
+    }
+
+    void OnReload(InputValue v)
+    {
+        weapon.StartReload();
+    }   
 }
