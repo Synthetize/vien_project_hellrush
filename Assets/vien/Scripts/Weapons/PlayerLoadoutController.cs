@@ -21,6 +21,7 @@ public class PlayerLoadoutController : MonoBehaviour {
     {
         weapon = GetComponent<Weapon>();
         AddWeaponToLoadout(WeaponName.SMG);
+        AddWeaponToLoadout(WeaponName.Pistol);
         weaponCamera = GameObject.FindWithTag("WeaponCamera");
         EquipWeaponAtIndex(0);
     }
@@ -57,18 +58,34 @@ public class PlayerLoadoutController : MonoBehaviour {
         SpawnWeaponModel(weaponLoadout.definition);
         weapon.SetEquippedWeaponStats(weaponLoadout);
     }
-    
+
     void SpawnWeaponModel(WeaponDefinition definition)
     {
         foreach (Transform child in weaponCamera.transform)
         {
             Destroy(child.gameObject);
         }
-        
+
         GameObject weaponModel = Instantiate(definition.weaponPrefab, weaponCamera.transform);
         weaponModel.transform.localPosition = definition.localTransformPosition;
         weaponModel.transform.localEulerAngles = definition.localTransformRotation;
         weaponModel.transform.localScale = definition.localTransformScale;
+    }
+
+    public void NextWeapon()
+    {
+        if (weapon.GetIsReloading()) return;
+        int currentIndex = equippedWeapons.FindIndex(w => w.definition == weapon.definition);
+        int nextIndex = (currentIndex + 1) % equippedWeapons.Count;
+        EquipWeaponAtIndex(nextIndex);
+    }
+    
+    public void PreviousWeapon()
+    {
+        if (weapon.GetIsReloading()) return;
+        int currentIndex = equippedWeapons.FindIndex(w => w.definition == weapon.definition);
+        int previousIndex = (currentIndex - 1 + equippedWeapons.Count) % equippedWeapons.Count;
+        EquipWeaponAtIndex(previousIndex);
     }
 
 }

@@ -6,16 +6,16 @@ using UnityEngine.InputSystem;
 
 
 public class Weapon : MonoBehaviour {
-    [Header("Setup")]
-    public WeaponDefinition definition;
+	[Header("Setup")]
+	public WeaponDefinition definition;
 	public List<WeaponModule> modules = new();  // equipped modules
 	public TextMeshProUGUI ammoDisplay;
 
-    [Header("Runtime (readonly)")]
+	[Header("Runtime (readonly)")]
 
 	PlayerLoadoutController playerLoadoutController;
+
 	WeaponLoadout _equippedLoadout;
-	int _currentAmmo;
 	float _shoot_cooldown;
 	bool _isFiring = false;
 	bool _isReloading = false;
@@ -98,28 +98,28 @@ public class Weapon : MonoBehaviour {
 			return false;
 		}
 		_shoot_cooldown = 1f / Mathf.Max(0.01f, definition.fireRate);
-		if (_currentAmmo <= 0)
+		if (definition.currentMagazineAmmo <= 0)
 		{
 			StartReload();
 			// Trigger reload or play empty sound
 			return false;
 		}
-		_currentAmmo--;
+		definition.currentMagazineAmmo--;
 		UpdateAmmoDisplay();
 		// HERE you do your raycast / spawn projectile and use "damage"
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
 		{
 			// Apply damage to the target
-			//print("Hit " + hit.collider.name + " for " + damage + " damage.");
+			print("Hit " + hit.collider.name + " for " + definition.damage + " damage.");
 		}
 		return true;
 	}
 
 	public void TryReload()
 	{
-		int neededAmmo = definition.magazineSize - _currentAmmo;
+		int neededAmmo = definition.magazineSize - definition.currentMagazineAmmo;
 		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
-		_currentAmmo += ammoToLoad;
+		definition.currentMagazineAmmo += ammoToLoad;
 		definition.totalAmmo -= ammoToLoad;
 		_isReloading = false;
 		UpdateAmmoDisplay();
@@ -184,15 +184,15 @@ public class Weapon : MonoBehaviour {
 	void UpdateAmmoDisplay()
 	{
 		if (ammoDisplay != null)
-			ammoDisplay.text = $"{_currentAmmo} / {definition.totalAmmo}";
-		Debug.Log($"Ammo: {_currentAmmo} / {definition.totalAmmo}");
+			ammoDisplay.text = $"{definition.currentMagazineAmmo} / {definition.totalAmmo}";
+		Debug.Log($"Ammo: {definition.currentMagazineAmmo} / {definition.totalAmmo}");
 		// Update your ammo UI here
 	}
 	
 	public void StartReload()
     {
         if (_isReloading) return;
-        if (_currentAmmo >= definition.magazineSize) return;
+        if (definition.currentMagazineAmmo >= definition.magazineSize) return;
         if (definition.totalAmmo <= 0) return;
 
         _isReloading = true;
@@ -201,23 +201,27 @@ public class Weapon : MonoBehaviour {
 
 	void CompleteReload()
 	{
-		int neededAmmo = definition.magazineSize - _currentAmmo;
+		int neededAmmo = definition.magazineSize - definition.currentMagazineAmmo;
 		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
-		_currentAmmo += ammoToLoad;
+		definition.currentMagazineAmmo += ammoToLoad;
 		definition.totalAmmo -= ammoToLoad;
 		_isReloading = false;
 		UpdateAmmoDisplay();
 	}
-	
+
 
 	public void SetEquippedWeaponStats(WeaponLoadout newLoadout)
 	{
 		_equippedLoadout = newLoadout;
 		definition = _equippedLoadout.definition;
 		modules = _equippedLoadout.defaultModules;
-		_currentAmmo = definition.magazineSize;
 		Recalculate();
 		UpdateAmmoDisplay();
+	}
+	
+	public bool GetIsReloading()
+	{
+		return _isReloading;
 	}
 
 }

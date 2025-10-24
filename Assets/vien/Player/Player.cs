@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     private FPController controller;
     private Weapon weapon;
+    private PlayerLoadoutController playerLoadoutController;
 
     void Awake()
     {
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
 
             controller = GetComponent<FPController>();
             weapon = GetComponent<Weapon>();
+            playerLoadoutController = GetComponent<PlayerLoadoutController>();
 
         }
     }
@@ -54,5 +56,15 @@ public class Player : MonoBehaviour
     void OnReload(InputValue v)
     {
         weapon.StartReload();
-    }   
+    }
+
+    void OnNextWeapon(InputValue v)
+    {
+        playerLoadoutController.NextWeapon();
+    }
+
+    void OnPreviousWeapon(InputValue v)
+    {
+        playerLoadoutController.PreviousWeapon();
+    }
 }

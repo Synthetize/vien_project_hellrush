@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899d445147b332548a35c056e2dc2fb4, type: 3}
+  m_Name: Glock
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
+  weaponName: 0
+  weaponPrefab: {fileID: 9058527240146432417, guid: 47e91a7f9c795b24daf3626c4d5ec2fb, type: 3}
+  localTransformPosition: {x: 0.02, y: -0.23, z: 0.18}
+  localTransformRotation: {x: 0, y: 0, z: 0}
+  localTransformScale: {x: 1, y: 1, z: 1}
+  muzzleLocalPosition: {x: 0, y: 0, z: 0}
+  fireMode: 0
+  damage: 55
+  fireRate: 10
+  spreadDegrees: 1.5
+  burstCount: 3
+  burstInterval: 0.07
+  magazineSize: 15
+  totalAmmo: 90
+  reloadTime: 0.5
+  useProjectile: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 60
+  projectileGravity: 0
+  range: 120
+  muzzleFlashPrefab: {fileID: 0}
+  fireClip: {fileID: 0}
+  reloadClip: {fileID: 0}
