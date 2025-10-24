@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899d445147b332548a35c056e2dc2fb4, type: 3}
+  m_Name: KrissVector
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
+  weaponName: 1
+  weaponPrefab: {fileID: 2473573420454191771, guid: 35db303e133388f49b95d2836f5257e1, type: 3}
+  localTransformPosition: {x: 0.364, y: -0.517, z: 1}
+  localTransformRotation: {x: -90, y: -45, z: -48}
+  localTransformScale: {x: 0.03, y: 0.03, z: 0.03}
+  muzzleLocalPosition: {x: 0.03, y: 0.03, z: 0.03}
+  fireMode: 1
+  damage: 20
+  fireRate: 10
+  spreadDegrees: 1.5
+  burstCount: 3
+  burstInterval: 0.07
+  magazineSize: 30
+  totalAmmo: 0
+  reloadTime: 1.8
+  useProjectile: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 60
+  projectileGravity: 0
+  range: 120
+  muzzleFlashPrefab: {fileID: 0}
+  fireClip: {fileID: 0}
+  reloadClip: {fileID: 0}

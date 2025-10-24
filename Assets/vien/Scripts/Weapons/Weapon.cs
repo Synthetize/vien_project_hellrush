@@ -12,12 +12,9 @@ public class Weapon : MonoBehaviour {
 	public TextMeshProUGUI ammoDisplay;
 
     [Header("Runtime (readonly)")]
-    public float damage;
-    public float fireRate;
-    public float reloadTime;
-	public int magazineSize;
-	public int totalAmmo;
 
+	PlayerLoadoutController playerLoadoutController;
+	WeaponLoadout _equippedLoadout;
 	int _currentAmmo;
 	float _shoot_cooldown;
 	bool _isFiring = false;
@@ -30,13 +27,17 @@ public class Weapon : MonoBehaviour {
     readonly List<ActiveBuff> _buffs = new();
 
     void Awake() {
-		Recalculate(); // calculate initial stats
-		_currentAmmo = magazineSize;
-		UpdateAmmoDisplay();
+		playerLoadoutController = GetComponent<PlayerLoadoutController>();
+		// _equippedLoadout = playerLoadoutController.
+		// definition = _equippedLoadout.definition;
+		// modules = _equippedLoadout.defaultModules;
+		// Recalculate(); // calculate initial stats
+		// _currentAmmo = definition.magazineSize;
+		// UpdateAmmoDisplay();
     }
 
 	void Update() {
-		// Timer buff
+
 		if (_buffs.Count > 0)
 		{
 			bool changed = false;
@@ -96,7 +97,7 @@ public class Weapon : MonoBehaviour {
 		{
 			return false;
 		}
-		_shoot_cooldown = 1f / Mathf.Max(0.01f, fireRate);
+		_shoot_cooldown = 1f / Mathf.Max(0.01f, definition.fireRate);
 		if (_currentAmmo <= 0)
 		{
 			StartReload();
@@ -116,10 +117,10 @@ public class Weapon : MonoBehaviour {
 
 	public void TryReload()
 	{
-		int neededAmmo = magazineSize - _currentAmmo;
-		int ammoToLoad = Mathf.Min(neededAmmo, totalAmmo);
+		int neededAmmo = definition.magazineSize - _currentAmmo;
+		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
 		_currentAmmo += ammoToLoad;
-		totalAmmo -= ammoToLoad;
+		definition.totalAmmo -= ammoToLoad;
 		_isReloading = false;
 		UpdateAmmoDisplay();
 	}
@@ -127,15 +128,9 @@ public class Weapon : MonoBehaviour {
 
 
     // --- calcolo stats super-lineare: applica Add, poi Mul, in ordine base -> moduli -> buff ---
-    void Recalculate() {
-		// base
-		damage = definition ? definition.damage : 10f;
-		fireRate = definition ? definition.fireRate : 5f;
-        reloadTime = definition ? definition.reloadTime : 2f;
-		magazineSize = definition ? definition.magazineSize : 30;
-		totalAmmo = definition ? definition.totalAmmo : 300;
-		
-
+    public void Recalculate() {
+		Debug.Log("Recalculating weapon stats...");
+		Debug.Log($"Base name: {definition.weaponName}, damage: {definition.damage}, fireRate: {definition.fireRate}, reloadTime: {definition.reloadTime}, magazineSize: {definition.magazineSize}");
         // 1) Add di tutti i moduli
         ApplyAll(modules, applyMul:false);
         // 2) Mul di tutti i moduli
@@ -159,10 +154,17 @@ public class Weapon : MonoBehaviour {
     void ApplyMod(StatMod mod, bool applyMulPhase) {
         if ((mod.op == StatOp.Mul) != applyMulPhase) return; // applica solo nella fase giusta
         switch (mod.stat) {
-            case "damage":       damage       = Apply(damage, mod); break;
-            case "fireRate":     fireRate     = Apply(fireRate, mod); break;
-            case "reloadTime":   reloadTime   = Apply(reloadTime, mod); break;
-            case "magazineSize": magazineSize = Mathf.RoundToInt(Apply(magazineSize, mod)); break;
+			case "damage":
+				definition.damage = Apply(definition.damage, mod); 
+				break;
+			case "fireRate":
+				definition.fireRate = Apply(definition.fireRate, mod); 
+				break;
+			case "reloadTime":
+				definition.reloadTime = Apply(definition.reloadTime, mod); 
+				break;
+            case "magazineSize": definition.magazineSize = Mathf.RoundToInt(Apply(definition.magazineSize, mod)); 
+			break;
         }
     }
 
@@ -182,30 +184,42 @@ public class Weapon : MonoBehaviour {
 	void UpdateAmmoDisplay()
 	{
 		if (ammoDisplay != null)
-			ammoDisplay.text = $"{_currentAmmo} / {totalAmmo}";
+			ammoDisplay.text = $"{_currentAmmo} / {definition.totalAmmo}";
+		Debug.Log($"Ammo: {_currentAmmo} / {definition.totalAmmo}");
 		// Update your ammo UI here
 	}
 	
 	public void StartReload()
     {
         if (_isReloading) return;
-        if (_currentAmmo >= magazineSize) return;
-        if (totalAmmo <= 0) return;
+        if (_currentAmmo >= definition.magazineSize) return;
+        if (definition.totalAmmo <= 0) return;
 
         _isReloading = true;
-        _reloadTimer = reloadTime; // reloadTime viene calcolato in Recalculate()
-        // qui puoi suonare animazione/suono di ricarica
+        _reloadTimer = definition.reloadTime;
     }
 
-    void CompleteReload()
-    {
-        int neededAmmo = magazineSize - _currentAmmo;
-        int ammoToLoad = Mathf.Min(neededAmmo, totalAmmo);
-        _currentAmmo += ammoToLoad;
-        totalAmmo -= ammoToLoad;
-        _isReloading = false;
-        UpdateAmmoDisplay();
-    }
+	void CompleteReload()
+	{
+		int neededAmmo = definition.magazineSize - _currentAmmo;
+		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
+		_currentAmmo += ammoToLoad;
+		definition.totalAmmo -= ammoToLoad;
+		_isReloading = false;
+		UpdateAmmoDisplay();
+	}
+	
+
+	public void SetEquippedWeaponStats(WeaponLoadout newLoadout)
+	{
+		_equippedLoadout = newLoadout;
+		definition = _equippedLoadout.definition;
+		modules = _equippedLoadout.defaultModules;
+		_currentAmmo = definition.magazineSize;
+		Recalculate();
+		UpdateAmmoDisplay();
+	}
+
 }
 
 
