@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject.SpaceFighter;
 
 
 public class Weapon : MonoBehaviour {
@@ -10,12 +11,14 @@ public class Weapon : MonoBehaviour {
 	public WeaponDefinition definition;
 	public List<WeaponModule> modules = new();  // equipped modules
 	public TextMeshProUGUI ammoDisplay;
+	public GameObject weaponCamera;
 
 	[Header("Runtime (readonly)")]
 
 	PlayerLoadoutController playerLoadoutController;
 
 	WeaponLoadout _equippedLoadout;
+	GameObject _weaponMuzzle;
 	float _shoot_cooldown;
 	bool _isFiring = false;
 	bool _isReloading = false;
@@ -26,18 +29,20 @@ public class Weapon : MonoBehaviour {
     class ActiveBuff { public BuffDefinition def; public float remaining; }
     readonly List<ActiveBuff> _buffs = new();
 
-    void Awake() {
+	void Awake()
+	{
 		playerLoadoutController = GetComponent<PlayerLoadoutController>();
+		weaponCamera = GameObject.FindWithTag("WeaponCamera");
+
 		// _equippedLoadout = playerLoadoutController.
 		// definition = _equippedLoadout.definition;
 		// modules = _equippedLoadout.defaultModules;
 		// Recalculate(); // calculate initial stats
 		// _currentAmmo = definition.magazineSize;
 		// UpdateAmmoDisplay();
-    }
-
+	}
+	
 	void Update() {
-
 		if (_buffs.Count > 0)
 		{
 			bool changed = false;
@@ -105,15 +110,19 @@ public class Weapon : MonoBehaviour {
 			return false;
 		}
 		definition.currentMagazineAmmo--;
+		SpawnProjectile();
 		UpdateAmmoDisplay();
 		// HERE you do your raycast / spawn projectile and use "damage"
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
 		{
+
 			// Apply damage to the target
 			print("Hit " + hit.collider.name + " for " + definition.damage + " damage.");
 		}
 		return true;
 	}
+
+
 
 	public void TryReload()
 	{
@@ -210,19 +219,32 @@ public class Weapon : MonoBehaviour {
 	}
 
 
-	public void SetEquippedWeaponStats(WeaponLoadout newLoadout)
+	public void SetEquippedWeaponStats(WeaponLoadout newLoadout, GameObject weaponMuzzle)
 	{
 		_equippedLoadout = newLoadout;
 		definition = _equippedLoadout.definition;
 		modules = _equippedLoadout.defaultModules;
 		Recalculate();
+		Debug.Log("Equipped weapon: " + _weaponMuzzle);
 		UpdateAmmoDisplay();
+		_weaponMuzzle = weaponMuzzle;
 	}
-	
+
+	void SpawnProjectile()
+	{
+		GameObject projectile = GameObject.Instantiate(definition.projectilePrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
+		Rigidbody rb = projectile.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.linearVelocity = _weaponMuzzle.transform.forward * definition.projectileSpeed;
+		}
+	}
+
 	public bool GetIsReloading()
 	{
 		return _isReloading;
 	}
+	
 
 }
 

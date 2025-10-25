@@ -2,3 +2,7 @@ KrissVector: https://sketchfab.com/3d-models/kriss-vector-79c37c9eedc444d8a14604
 
 Modular Vector: https://sketchfab.com/3d-models/kriss-vector-79c37c9eedc444d8a146043045e7cf3e#download
 
+glock https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d
+
+
+projectile sparks https://www.pngwing.com/en/free-png-dkhhf

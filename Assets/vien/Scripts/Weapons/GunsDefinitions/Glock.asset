@@ -17,6 +17,7 @@ MonoBehaviour:
   localTransformPosition: {x: 0.02, y: -0.23, z: 0.18}
   localTransformRotation: {x: 0, y: 0, z: 0}
   localTransformScale: {x: 1, y: 1, z: 1}
+  muzzleLocalPosition: {x: 0.0227, y: 0.1168, z: 0.5093}
   fireMode: 0
   damage: 55
   fireRate: 10
@@ -28,7 +29,7 @@ MonoBehaviour:
   reloadTime: 0.5
   currentMagazineAmmo: 15
   useProjectile: 0
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 4802076708353751960, guid: a5f5a8e656b36da4cbb6070438750005, type: 3}
   projectileSpeed: 60
   projectileGravity: 0
   range: 120

@@ -15,7 +15,7 @@ public class WeaponDefinition : ScriptableObject {
     public Vector3 localTransformPosition = new (0.364f, -0.517f, 1);
     public Vector3 localTransformRotation = new (-90, -45, -48);
     public Vector3 localTransformScale = new (0.03f, 0.03f, 0.03f);
-    //public Vector3 muzzleLocalPosition = new (0, 0, 0.5f);
+    public Vector3 muzzleLocalPosition = new (0, 0, 0.5f);
 
     [Header("Shooting & Stats")]
     public FireMode fireMode = FireMode.Auto;

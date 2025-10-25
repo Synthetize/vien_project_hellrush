@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class WeaponLoadout {
     public string weaponId;                 // un ID unico (es: "pistol", "smg")
     public WeaponDefinition definition;     // dai tuoi ScriptableObject
-    public List<WeaponModule> defaultModules;   // moduli di default per QUELL’arma
+    public List<WeaponModule> defaultModules;   // moduli di default per QUELL’arma    
+
 }
 
 [RequireComponent(typeof(Weapon))]
@@ -20,8 +22,8 @@ public class PlayerLoadoutController : MonoBehaviour {
     void Start()
     {
         weapon = GetComponent<Weapon>();
-        AddWeaponToLoadout(WeaponName.SMG);
         AddWeaponToLoadout(WeaponName.Pistol);
+        AddWeaponToLoadout(WeaponName.SMG);
         weaponCamera = GameObject.FindWithTag("WeaponCamera");
         EquipWeaponAtIndex(0);
     }
@@ -44,7 +46,7 @@ public class PlayerLoadoutController : MonoBehaviour {
             {
                 weaponId = weaponName.ToString().ToLower(),
                 definition = Instantiate(availableWeapons.Find(w => w.weaponName == weaponName)),
-                defaultModules = new List<WeaponModule>()
+                defaultModules = new List<WeaponModule>(),
             });
         }
 
@@ -55,11 +57,11 @@ public class PlayerLoadoutController : MonoBehaviour {
         if (index < 0 || index >= equippedWeapons.Count) return;
 
         var weaponLoadout = equippedWeapons[index];
-        SpawnWeaponModel(weaponLoadout.definition);
-        weapon.SetEquippedWeaponStats(weaponLoadout);
+        GameObject weaponMuzzle = SpawnWeaponModel(weaponLoadout.definition);
+        weapon.SetEquippedWeaponStats(weaponLoadout, weaponMuzzle);
     }
 
-    void SpawnWeaponModel(WeaponDefinition definition)
+    GameObject SpawnWeaponModel(WeaponDefinition definition)
     {
         foreach (Transform child in weaponCamera.transform)
         {
@@ -70,6 +72,9 @@ public class PlayerLoadoutController : MonoBehaviour {
         weaponModel.transform.localPosition = definition.localTransformPosition;
         weaponModel.transform.localEulerAngles = definition.localTransformRotation;
         weaponModel.transform.localScale = definition.localTransformScale;
+
+        GameObject weaponMuzzle = weaponModel.transform.Find("Muzzle").gameObject;
+        return weaponMuzzle;
     }
 
     public void NextWeapon()
