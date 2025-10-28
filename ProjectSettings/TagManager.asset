@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WeaponCamera
   - Muzzle
+  - Camera
   layers:
   - Default
   - TransparentFX

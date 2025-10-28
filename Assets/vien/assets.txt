@@ -6,3 +6,11 @@ glock https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a7
 
 
 projectile sparks https://www.pngwing.com/en/free-png-dkhhf
+
+fireball https://nyknck.itch.io/fireball-animation/download/eyJleHBpcmVzIjoxNzYxNTk0NTE5LCJpZCI6MzkwNzU0fQ%3d%3d%2edyWgV2OkXbr%2bnODT7C4YdF3OEow%3d
+
+DOOM/DOOM2 https://www.spriters-resource.com/ms_dos/doomdoomii/
+
+EXPLOSION https://www.kindpng.com/imgv/hRRiim_drawn-explosions-sprite-transparent-explosion-sprite-sheet-hd/
+
+CACODEMON https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites

@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour {
 	[Header("Setup")]
 	public WeaponDefinition definition;
 	public List<WeaponModule> modules = new();  // equipped modules
-	public TextMeshProUGUI ammoDisplay;
+	public HudController hudController;
 	public GameObject weaponCamera;
 
 	[Header("Runtime (readonly)")]
@@ -32,6 +32,7 @@ public class Weapon : MonoBehaviour {
 	void Awake()
 	{
 		playerLoadoutController = GetComponent<PlayerLoadoutController>();
+		hudController = GetComponent<HudController>();
 		weaponCamera = GameObject.FindWithTag("WeaponCamera");
 
 		// _equippedLoadout = playerLoadoutController.
@@ -110,14 +111,18 @@ public class Weapon : MonoBehaviour {
 			return false;
 		}
 		definition.currentMagazineAmmo--;
-		SpawnProjectile();
-		UpdateAmmoDisplay();
+		//SpawnProjectile();
+		
+		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 		// HERE you do your raycast / spawn projectile and use "damage"
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
 		{
-
+			if(hit.collider.TryGetComponent<IDamageable>(out var damageable))
+			{
+				damageable.TakeDamage(definition.damage);
+			}
 			// Apply damage to the target
-			print("Hit " + hit.collider.name + " for " + definition.damage + " damage.");
+			//print("Hit " + hit.collider.name + " for " + definition.damage + " damage.");
 		}
 		return true;
 	}
@@ -131,15 +136,15 @@ public class Weapon : MonoBehaviour {
 		definition.currentMagazineAmmo += ammoToLoad;
 		definition.totalAmmo -= ammoToLoad;
 		_isReloading = false;
-		UpdateAmmoDisplay();
+		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 	}
 	
 
 
     // --- calcolo stats super-lineare: applica Add, poi Mul, in ordine base -> moduli -> buff ---
     public void Recalculate() {
-		Debug.Log("Recalculating weapon stats...");
-		Debug.Log($"Base name: {definition.weaponName}, damage: {definition.damage}, fireRate: {definition.fireRate}, reloadTime: {definition.reloadTime}, magazineSize: {definition.magazineSize}");
+		//Debug.Log("Recalculating weapon stats...");
+		//Debug.Log($"Base name: {definition.weaponName}, damage: {definition.damage}, fireRate: {definition.fireRate}, reloadTime: {definition.reloadTime}, magazineSize: {definition.magazineSize}");
         // 1) Add di tutti i moduli
         ApplyAll(modules, applyMul:false);
         // 2) Mul di tutti i moduli
@@ -190,14 +195,6 @@ public class Weapon : MonoBehaviour {
 		_isReloading = isReloading;
 	}
 
-	void UpdateAmmoDisplay()
-	{
-		if (ammoDisplay != null)
-			ammoDisplay.text = $"{definition.currentMagazineAmmo} / {definition.totalAmmo}";
-		Debug.Log($"Ammo: {definition.currentMagazineAmmo} / {definition.totalAmmo}");
-		// Update your ammo UI here
-	}
-	
 	public void StartReload()
     {
         if (_isReloading) return;
@@ -215,7 +212,7 @@ public class Weapon : MonoBehaviour {
 		definition.currentMagazineAmmo += ammoToLoad;
 		definition.totalAmmo -= ammoToLoad;
 		_isReloading = false;
-		UpdateAmmoDisplay();
+		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 	}
 
 
@@ -225,8 +222,8 @@ public class Weapon : MonoBehaviour {
 		definition = _equippedLoadout.definition;
 		modules = _equippedLoadout.defaultModules;
 		Recalculate();
-		Debug.Log("Equipped weapon: " + _weaponMuzzle);
-		UpdateAmmoDisplay();
+		//Debug.Log("Equipped weapon: " + _weaponMuzzle);
+		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 		_weaponMuzzle = weaponMuzzle;
 	}
 

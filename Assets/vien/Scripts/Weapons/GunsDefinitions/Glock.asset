@@ -30,7 +30,7 @@ MonoBehaviour:
   currentMagazineAmmo: 15
   useProjectile: 0
   projectilePrefab: {fileID: 4802076708353751960, guid: a5f5a8e656b36da4cbb6070438750005, type: 3}
-  projectileSpeed: 60
+  projectileSpeed: 100
   projectileGravity: 0
   range: 120
   muzzleFlashPrefab: {fileID: 0}
