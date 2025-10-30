@@ -9,10 +9,12 @@ public class Cacodemon : MonoBehaviour, IDamageable
     public float viewRange = 10f;
     public float halfFovDeg = 60f;
     public float rotationSpeed = 10f;
+    private float turnSpeed = 10f;
     public GameObject fireballPrefab;
     private Player player;
     private Transform cameraTransform;
     private NavMeshAgent agent;
+    private FPController playerController;
     private Animator animator;
     private bool isDead = false;
 
@@ -27,6 +29,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         player = FindFirstObjectByType<Player>();
         cameraTransform = player.transform.GetChild(0);
+        playerController = FindFirstObjectByType<FPController>();
         //_shoot_cooldown = 1f / Mathf.Max(0.01f, fireRate);
         if (cameraTransform.tag != "Camera")
         {
@@ -47,6 +50,15 @@ public class Cacodemon : MonoBehaviour, IDamageable
 
         //agent.SetDestination(cameraTransform.position);
         //agent.updateRotation = true;
+        //agent.SetDestination(playerController.transform.position);
+        // Vector3 dir = playerController.transform.position - transform.position;
+        // dir.y = 0f;
+        // if (dir.sqrMagnitude > 0.0001f)
+        //     {
+        //         Quaternion targetRot = Quaternion.LookRotation(dir);
+        //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
+        //     }
+
 
         if (_shoot_cooldown > 0f)
 		{
@@ -55,9 +67,11 @@ public class Cacodemon : MonoBehaviour, IDamageable
 
         if (CanSeePlayer() && _shoot_cooldown <= 0f)
         {
+            agent.speed = 1f;
             Instantiate(fireballPrefab, transform.position, Quaternion.identity);
             animator.SetTrigger("OnAttack");
             _shoot_cooldown = 1f / Mathf.Max(0.01f, fireRate);
+            agent.speed = 3f;
 
         }
 
@@ -89,7 +103,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float sqrDist = delta.sqrMagnitude;
         if (sqrDist > viewRange * viewRange)
         {
-            //Debug.Log("Player is out of range");
+            Debug.Log("Player is out of range");
             return false;
         }
 
@@ -97,7 +111,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float cosHalfFov = Mathf.Cos(halfFovDeg * Mathf.Deg2Rad);
         if (Vector3.Dot(transform.forward, dir) < cosHalfFov)
         {
-            //ebug.Log("Player is out of FOV");
+            Debug.Log("Player is out of FOV");
             return false;
         }
 
@@ -106,11 +120,11 @@ public class Cacodemon : MonoBehaviour, IDamageable
 		{
 			if (hitInfo.collider.tag == "Player")
             {
-                //Debug.Log("Player spotted!");
+                Debug.Log("Player spotted!");
                 return true;
             }
 		}       
-        //Debug.Log("Player is hidden behind an obstacle");
+        Debug.Log("Player is occluded");
         return false;
 
 

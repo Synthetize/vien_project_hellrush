@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -112,10 +113,11 @@ public class Weapon : MonoBehaviour {
 		}
 		definition.currentMagazineAmmo--;
 		//SpawnProjectile();
-		
+
 		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 		// HERE you do your raycast / spawn projectile and use "damage"
-		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
+		int excludeMask = ~LayerMask.GetMask("AttackRange");
+		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, excludeMask))
 		{
 			if(hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
