@@ -48,16 +48,16 @@ public class Cacodemon : MonoBehaviour, IDamageable
     {
         if (isDead) return;
 
-        //agent.SetDestination(cameraTransform.position);
-        //agent.updateRotation = true;
-        //agent.SetDestination(playerController.transform.position);
-        // Vector3 dir = playerController.transform.position - transform.position;
-        // dir.y = 0f;
-        // if (dir.sqrMagnitude > 0.0001f)
-        //     {
-        //         Quaternion targetRot = Quaternion.LookRotation(dir);
-        //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
-        //     }
+        agent.SetDestination(cameraTransform.position);
+        agent.updateRotation = true;
+        agent.SetDestination(playerController.transform.position);
+        Vector3 dir = playerController.transform.position - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
+            }
 
 
         if (_shoot_cooldown > 0f)
@@ -118,7 +118,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float dist = Mathf.Sqrt(sqrDist);
         if(Physics.Raycast(transform.position, dir, out RaycastHit hitInfo, dist))
 		{
-			if (hitInfo.collider.tag == "Player")
+			if (hitInfo.collider.tag == "PlayerBody")
             {
                 Debug.Log("Player spotted!");
                 return true;
