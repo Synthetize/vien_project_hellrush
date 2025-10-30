@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class HellGate_Controller : MonoBehaviour
 {
+    public bool togglePortal = false;
     [SerializeField]
     private Gradient emissionColor;
     [SerializeField]
@@ -34,6 +35,15 @@ public class HellGate_Controller : MonoBehaviour
         gateMaterial.SetColor("_EmissionColor", emissionColor.Evaluate(0));
         gateLight.intensity = 0;
     }
+
+        private void Update()
+        {
+            if (togglePortal)
+            {
+                togglePortal = false;
+                ToggleHellGate();
+            }
+        }
 
     public void ToggleHellGate()
     {
