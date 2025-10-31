@@ -79,8 +79,10 @@ public class Cacodemon : MonoBehaviour, IDamageable
 
     public void TakeDamage(float amount)
     {
-        if (isDead) return;
 
+        if (isDead) return;
+        Debug.Log("Health before damage: " + health);
+        Debug.Log("Cacodemon took " + amount + " damage.");
         health -= (int)amount;
         if (health <= 0)
         {
@@ -88,8 +90,11 @@ public class Cacodemon : MonoBehaviour, IDamageable
             agent.isStopped = true;
             isDead = true;
             Destroy(gameObject, 3f);
-        }
-        animator.SetTrigger("OnHit");
+        } else
+		{
+			animator.SetTrigger("OnHit");
+		}
+        Debug.Log("Health after damage: " + health);
 
     }
 
@@ -103,7 +108,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float sqrDist = delta.sqrMagnitude;
         if (sqrDist > viewRange * viewRange)
         {
-            Debug.Log("Player is out of range");
+            // Debug.Log("Player is out of range");
             return false;
         }
 
@@ -111,7 +116,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float cosHalfFov = Mathf.Cos(halfFovDeg * Mathf.Deg2Rad);
         if (Vector3.Dot(transform.forward, dir) < cosHalfFov)
         {
-            Debug.Log("Player is out of FOV");
+            // Debug.Log("Player is out of FOV");
             return false;
         }
 
@@ -120,11 +125,11 @@ public class Cacodemon : MonoBehaviour, IDamageable
 		{
 			if (hitInfo.collider.tag == "PlayerBody")
             {
-                Debug.Log("Player spotted!");
+                // Debug.Log("Player spotted!");
                 return true;
             }
 		}       
-        Debug.Log("Player is occluded");
+        // Debug.Log("Player is occluded");
         return false;
 
 

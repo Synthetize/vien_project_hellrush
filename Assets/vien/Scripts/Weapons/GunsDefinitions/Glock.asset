@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
   weaponName: 0
   weaponPrefab: {fileID: 9058527240146432417, guid: 47e91a7f9c795b24daf3626c4d5ec2fb, type: 3}
+  bulletImpactPrefab: {fileID: 5363221447929924500, guid: 4304956fc2c3574428ddbcbb450f4d2a, type: 3}
   localTransformPosition: {x: 0.02, y: -0.23, z: 0.18}
   localTransformRotation: {x: 0, y: 0, z: 0}
   localTransformScale: {x: 1, y: 1, z: 1}
@@ -33,6 +34,6 @@ MonoBehaviour:
   projectileSpeed: 100
   projectileGravity: 0
   range: 120
-  muzzleFlashPrefab: {fileID: 0}
+  muzzleFlashPrefab: {fileID: 198792769130808804, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
   fireClip: {fileID: 0}
   reloadClip: {fileID: 0}

@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour {
 	public List<WeaponModule> modules = new();  // equipped modules
 	public HudController hudController;
 	public GameObject weaponCamera;
+	
 
 	[Header("Runtime (readonly)")]
 
@@ -25,6 +26,9 @@ public class Weapon : MonoBehaviour {
 	bool _isReloading = false;
 	bool _canShoot = true;
 	float _reloadTimer;
+
+	LineRenderer _laserLineRenderer;
+
 
     // Active buffs
     class ActiveBuff { public BuffDefinition def; public float remaining; }
@@ -74,7 +78,7 @@ public class Weapon : MonoBehaviour {
 				CompleteReload();
 			}
 		}
-		
+
 		if (_isFiring && !_isReloading) TryFire();
 
 	}
@@ -100,6 +104,7 @@ public class Weapon : MonoBehaviour {
 
 	public bool TryFire()
 	{
+
 		if (_shoot_cooldown > 0f)
 		{
 			return false;
@@ -117,14 +122,21 @@ public class Weapon : MonoBehaviour {
 		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 		// HERE you do your raycast / spawn projectile and use "damage"
 		int excludeMask = ~LayerMask.GetMask("AttackRange");
+
+		Instantiate(definition.muzzleFlashPrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation, _weaponMuzzle.transform);
+
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, excludeMask))
 		{
-			if(hit.collider.TryGetComponent<IDamageable>(out var damageable))
+			GameObject bulletImpact = GameObject.Instantiate(definition.bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+
+			Destroy(bulletImpact, 0.5f);
+			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
+				if (definition.weaponName == WeaponName.Pistol) return true;
 				damageable.TakeDamage(definition.damage);
+				
 			}
-			// Apply damage to the target
-			//print("Hit " + hit.collider.name + " for " + definition.damage + " damage.");
+
 		}
 		return true;
 	}

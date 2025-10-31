@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class HellGate_Controller : MonoBehaviour
 {
     public bool togglePortal = false;
@@ -20,6 +21,7 @@ public class HellGate_Controller : MonoBehaviour
 
     private bool inTransition, hellGateOn;
     private float gateAudioMaxVolume = 0.3f, gateLightMaxIntencity = 5f, fireAudioMaxVolume = 0.6f;
+    Collider gateCollider;
 
     private void Start()
     {
@@ -34,6 +36,8 @@ public class HellGate_Controller : MonoBehaviour
         gateEffectMaterial.SetFloat("_Alpha", 0);
         gateMaterial.SetColor("_EmissionColor", emissionColor.Evaluate(0));
         gateLight.intensity = 0;
+        gateCollider = GetComponent<Collider>();
+        gateCollider.enabled = false;
     }
 
         private void Update()
@@ -52,10 +56,12 @@ public class HellGate_Controller : MonoBehaviour
 
         if (!hellGateOn)
         {
+            gateCollider.enabled = true;
             StartCoroutine(PreActivateGate());
         }
         else
         {
+            gateCollider.enabled = false;
             StartCoroutine(DeactivateGate());
         }
 
