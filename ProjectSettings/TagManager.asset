@@ -9,6 +9,8 @@ TagManager:
   - Camera
   - PlayerBody
   - FxTemporaire
+  - SpawnPoint
+  - MainIslandSpawn
   layers:
   - Default
   - TransparentFX
