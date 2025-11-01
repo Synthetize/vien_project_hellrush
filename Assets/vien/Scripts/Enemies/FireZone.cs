@@ -16,7 +16,7 @@ public class FireZoneBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerBody"))
+        if (other.CompareTag("Player"))
         {
             healthController.TakeDamage(initialDamage);
             tickTimer = 0f;
@@ -26,7 +26,7 @@ public class FireZoneBehaviour : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         tickTimer += Time.deltaTime;
-        if (other.CompareTag("PlayerBody"))
+        if (other.CompareTag("Player"))
         {
             if (healthController != null)
             {

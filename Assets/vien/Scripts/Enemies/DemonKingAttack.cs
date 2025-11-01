@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ExecutionerAttack : MonoBehaviour
+public class DemonKingAttack : MonoBehaviour
 {
-    ExecutionerDemon executionerDemon;
+    DemonKing demonKing;
     void Start()
     {
-        executionerDemon = GetComponentInParent<ExecutionerDemon>();
+        demonKing = GetComponentInParent<DemonKing>();
     }
     void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
-			executionerDemon.SetIsInAttackRange(true);
+			demonKing.SetIsInAttackRange(true);
 		}
 	}
     
@@ -20,7 +20,7 @@ public class ExecutionerAttack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            executionerDemon.SetIsInAttackRange(false);
+            demonKing.SetIsInAttackRange(false);
         }
     }
 }

@@ -11,6 +11,8 @@ TagManager:
   - FxTemporaire
   - SpawnPoint
   - MainIslandSpawn
+  - FireballSpawns
+  - Enemy
   layers:
   - Default
   - TransparentFX
