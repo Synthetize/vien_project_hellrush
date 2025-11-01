@@ -123,7 +123,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         float dist = Mathf.Sqrt(sqrDist);
         if(Physics.Raycast(transform.position, dir, out RaycastHit hitInfo, dist))
 		{
-			if (hitInfo.collider.tag == "PlayerBody")
+			if (hitInfo.collider.tag == "Player")
             {
                 // Debug.Log("Player spotted!");
                 return true;

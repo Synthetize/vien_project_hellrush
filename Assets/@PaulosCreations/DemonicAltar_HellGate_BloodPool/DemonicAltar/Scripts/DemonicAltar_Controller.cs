@@ -4,6 +4,7 @@ using PaulosDemonicAltar;
 
 public class DemonicAltar_Controller : MonoBehaviour
 {
+    [SerializeField] private bool toggleDemonicAltar = false;
     [SerializeField] private EnabledState lightningEffects;
     [Space(10)]
 
@@ -31,9 +32,11 @@ public class DemonicAltar_Controller : MonoBehaviour
 
         altarMat = altarRend.material;
         altarMat.SetColor("_EmissionColor", emissionColor.Evaluate(0));
+        //ToggleDemonicAltar();
     }
 
-    public void ToggleDemonicAltar()
+
+	public void ToggleDemonicAltar()
     {
         if (inTransition)
             return;

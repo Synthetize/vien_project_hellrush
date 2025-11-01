@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 public class HellGate_Controller : MonoBehaviour
 {
-    public bool togglePortal = false;
+    [SerializeField]
+    private bool autoActivate = false;
     [SerializeField]
     private Gradient emissionColor;
     [SerializeField]
@@ -21,7 +21,8 @@ public class HellGate_Controller : MonoBehaviour
 
     private bool inTransition, hellGateOn;
     private float gateAudioMaxVolume = 0.3f, gateLightMaxIntencity = 5f, fireAudioMaxVolume = 0.6f;
-    Collider gateCollider;
+    private Collider gateCollider;
+    public  GameObject portalColliderEnabler;
 
     private void Start()
     {
@@ -37,17 +38,9 @@ public class HellGate_Controller : MonoBehaviour
         gateMaterial.SetColor("_EmissionColor", emissionColor.Evaluate(0));
         gateLight.intensity = 0;
         gateCollider = GetComponent<Collider>();
+        portalColliderEnabler.SetActive(autoActivate);
         gateCollider.enabled = false;
     }
-
-        private void Update()
-        {
-            if (togglePortal)
-            {
-                togglePortal = false;
-                ToggleHellGate();
-            }
-        }
 
     public void ToggleHellGate()
     {
@@ -56,12 +49,10 @@ public class HellGate_Controller : MonoBehaviour
 
         if (!hellGateOn)
         {
-            gateCollider.enabled = true;
             StartCoroutine(PreActivateGate());
         }
         else
         {
-            gateCollider.enabled = false;
             StartCoroutine(DeactivateGate());
         }
 
@@ -131,6 +122,7 @@ public class HellGate_Controller : MonoBehaviour
         gateLight.intensity = gateLightMaxIntencity;
         gateAudio.volume = gateAudioMaxVolume;
         inTransition = false;
+        gateCollider.enabled = true;
     }
 
     private IEnumerator DeactivateGate()
