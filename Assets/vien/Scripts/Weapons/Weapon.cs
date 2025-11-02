@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour {
 	public List<WeaponModule> modules = new();  // equipped modules
 	public HudController hudController;
 	public GameObject weaponCamera;
+	public AudioSource weaponCameraAudioSource;
 	
 
 	[Header("Runtime (readonly)")]
@@ -39,6 +40,7 @@ public class Weapon : MonoBehaviour {
 		playerLoadoutController = GetComponent<PlayerLoadoutController>();
 		hudController = GetComponent<HudController>();
 		weaponCamera = GameObject.FindWithTag("WeaponCamera");
+		weaponCameraAudioSource = weaponCamera.GetComponent<AudioSource>();
 
 		// _equippedLoadout = playerLoadoutController.
 		// definition = _equippedLoadout.definition;
@@ -127,7 +129,7 @@ public class Weapon : MonoBehaviour {
 
 		if (definition.fireClip != null)
 		{
-			AudioSource.PlayClipAtPoint(definition.fireClip, Camera.main.transform.position);
+			weaponCameraAudioSource.PlayOneShot(definition.fireClip);
 		}
 
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, excludeMask))
@@ -222,7 +224,7 @@ public class Weapon : MonoBehaviour {
 	
 		if (definition.reloadClip != null)
 		{
-			AudioSource.PlayClipAtPoint(definition.reloadClip, Camera.main.transform.position);
+			weaponCameraAudioSource.PlayOneShot(definition.reloadClip);
 		}
 		float reloadLength = (definition.reloadClip != null) ? definition.reloadClip.length : definition.reloadTime;
 
@@ -253,7 +255,7 @@ public class Weapon : MonoBehaviour {
 		_weaponMuzzle = weaponMuzzle;
 		if (definition.weaponEquip != null)
 		{
-			AudioSource.PlayClipAtPoint(definition.weaponEquip, Camera.main.transform.position);
+			weaponCameraAudioSource.PlayOneShot(definition.weaponEquip);
 		}
 	}
 

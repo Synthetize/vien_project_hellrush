@@ -84,14 +84,13 @@ public class FPController : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        if (OnLand == null) OnLand = new UnityEvent();
-        OnLand.AddListener(PlayLandSound);
     }
     public void PlayLandSound()
     {
         if (audioSource == null) audioSource = GetComponent<AudioSource>();
         if (audioSource == null || landSound == null) return;
-        audioSource.PlayOneShot(landSound);
+        float currentVolume = audioSource.volume;
+        audioSource.PlayOneShot(landSound, currentVolume/2f);
     }
 
     void Update()

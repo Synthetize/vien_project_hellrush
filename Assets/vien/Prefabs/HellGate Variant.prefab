@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: portalColliderEnabler
       value: 
       objectReference: {fileID: 7162017906521163091}
+    - target: {fileID: 9209165613801860978, guid: efa6e14d99a57f74dbbce310ae1a6d0e, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

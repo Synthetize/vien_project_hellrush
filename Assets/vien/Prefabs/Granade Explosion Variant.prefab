@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GranadeExplosion
   explosionRadius: 3
   explosionDamage: 50
-  explosionSound: {fileID: 8300000, guid: 677415bfa7a0ace49bbde071110ce56a, type: 3}
+  explosionSound: {fileID: 8300000, guid: a406134d9b47fc546beef07ae8da6505, type: 3}
   AudioVolume: 1
 --- !u!82 &9093951401846397806
 AudioSource:
@@ -183,9 +183,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 677415bfa7a0ace49bbde071110ce56a, type: 3}
+  m_Resource: {fileID: 8300000, guid: a406134d9b47fc546beef07ae8da6505, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
