@@ -6,12 +6,15 @@ using UnityEngine.UI;
 using Zenject;
 using System.Collections;
 using NUnit.Framework;
+using System.Collections.Generic;
+
 
 public class DialogsManager : MonoBehaviour
 {
     private TextMeshProUGUI textDisplay;
     private RawImage speakerImage;
     private bool isSpeaking = false;
+    readonly List<Action> _actionQueue = new List<Action>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,16 +22,52 @@ public class DialogsManager : MonoBehaviour
         speakerImage = GetComponentInChildren<RawImage>();
         speakerImage.enabled = false;
         textDisplay.enabled = false;
-        InitialDialog();
-
+        EnqueueAction(InitialDialog);
     }
 
-    // Update is called once per frame
+    public void EnqueueAction(Action action)
+    {
+        if (action == null) return;
+        _actionQueue.Add(action);
+    }
+
+    
     void Update()
     {
-
+        // esegue la prossima azione se non stiamo già mostrando dialoghi
+        if (!isSpeaking && _actionQueue.Count > 0)
+        {
+            var next = _actionQueue[0];
+            _actionQueue.RemoveAt(0);
+            try { next?.Invoke(); }
+            catch (Exception e) { Debug.LogException(e); }
+        }
     }
 
+
+
+
+
+    IEnumerator ShowMoreLines(string[] lines, float initialDelay, float displayDuration, float betweenDelay)
+    {
+        isSpeaking = true;
+        if (textDisplay == null) yield break;
+        yield return new WaitForSeconds(initialDelay);
+        if (speakerImage != null) speakerImage.enabled = true;
+        textDisplay.enabled = true;
+
+        foreach (string line in lines)
+        {
+            textDisplay.text = line;
+            yield return new WaitForSeconds(displayDuration);
+            yield return new WaitForSeconds(betweenDelay);
+        }
+
+        textDisplay.enabled = false;
+        if (speakerImage != null) speakerImage.enabled = false;
+        isSpeaking = false;
+    }
+    
 
 
     public void InitialDialog()
@@ -45,40 +84,33 @@ public class DialogsManager : MonoBehaviour
         StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo, lineThree }, 0f, 3f, 1f));
     }
 
-    public void AltarInteraction(bool hasEnoughItems)
+    public void AltarInteractionTrue()
     {
-        if (hasEnoughItems)
-        {
-            StartCoroutine(ShowMoreLines(new string[] { "Nice, It's working, I suggest to keep some distance, just in case." }, 0f, 3f, 1f));
-        }
-        else
-        {
-            StartCoroutine(ShowMoreLines(new string[] { "You need to collect both runes to proceed." }, 0f, 3f, 1f));
-        }
+        StartCoroutine(ShowMoreLines(new string[] { "Great, the ritual has started, now we need to defend the altar from the incoming waves of demons." }, 0f, 3f, 1f));
     }
-    
 
-    
-    IEnumerator ShowMoreLines(string[] lines, float initialDelay, float displayDuration, float betweenDelay)
+    public void AltarInteractionFalse()
     {
-        isSpeaking = true;
-        if (speakerImage != null) speakerImage.enabled = true;
-        if (textDisplay == null) yield break;
+        StartCoroutine(ShowMoreLines(new string[] { "Nice, It's working, Keep some distance, just in case." }, 0f, 3f, 1f));
+    }
 
-        yield return new WaitForSeconds(initialDelay);
+    public void FirstWaveCompleted()
+    {
+        string lineOne = "Good job, go back and go through the next portal to get the other rune.";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne }, 0f, 3f, 1f));
+    }
 
-        textDisplay.enabled = true;
+    public void SecondWaveCompleted()
+    {
+        string lineOne = "Well done, now return to the altar to summon the demon king";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne }, 0f, 3f, 1f));
+    }
 
-        foreach (string line in lines)
-        {
-            textDisplay.text = line;
-            yield return new WaitForSeconds(displayDuration);
-            yield return new WaitForSeconds(betweenDelay);
-        }
-
-        textDisplay.enabled = false;
-        if (speakerImage != null) speakerImage.enabled = false;
-        isSpeaking = false;
+    public void BossDefeated()
+    {
+        string lineOne = "You did it! The demon king has been defeated!";
+        string lineTwo = "With his defeat, the dark ritual has been thwarted, and the world is safe once again.";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo }, 0f, 3f, 1f));
     }
 
 }

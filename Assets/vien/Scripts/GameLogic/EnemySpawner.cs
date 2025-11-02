@@ -32,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
     private HellGate_Controller hellGateController;
     public AudioSource audioSource;
+    private WaveManager waveManager;
 
     // public flag other systems can read
     [HideInInspector] public bool allEnemiesCleared = false;
@@ -41,6 +42,7 @@ public class EnemySpawner : MonoBehaviour
     bool _isFading;
 
     bool _bossSpawned = false;
+    bool _waveAdvanced = false;
 
     void Start()
     {
@@ -74,15 +76,22 @@ public class EnemySpawner : MonoBehaviour
             GameObject parentObj = transform.parent.gameObject;
             hellGateController = parentObj.GetComponentInChildren<HellGate_Controller>();
         }
+        waveManager = FindFirstObjectByType<WaveManager>();
     }
 
     void Update()
     {
         if (allEnemiesCleared && !_isFading)
         {
-            // consume the flag and start fade out which will toggle gate when done
-            allEnemiesCleared = false;
-            _fadeRoutine = StartCoroutine(FadeOutAudioAndToggleGate(audioFadeDuration));
+            if (!_waveAdvanced)
+            {
+                allEnemiesCleared = false;
+                // consume the flag and start fade out which will toggle gate when done
+                Debug.Log("update: All enemies cleared, fading out audio and toggling gate.");
+                waveManager.AdvanceWave();
+                _fadeRoutine = StartCoroutine(FadeOutAudioAndToggleGate(audioFadeDuration));
+                _waveAdvanced = true;
+            }
         }
     }
 

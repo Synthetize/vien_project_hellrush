@@ -22,7 +22,7 @@ public class DemonicAltar : MonoBehaviour
 		if (other.CompareTag("Player") && !dialogTriggered)
         {
             dialogTriggered = true;
-            dialogsManager.AltarDialog();
+            dialogsManager.EnqueueAction(dialogsManager.AltarDialog);
         }
 	}
 }

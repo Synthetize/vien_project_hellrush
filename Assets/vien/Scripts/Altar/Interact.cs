@@ -11,6 +11,8 @@ public class AltarInteraction : MonoBehaviour
     bool isInside = false;
     public InputActionReference inputActions;
     bool hasInteracted = false;
+
+    public HellGate_Controller[] spawnPortal;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -59,12 +61,17 @@ public class AltarInteraction : MonoBehaviour
         if (playerInventory.GetItemCount() >= 2)
         {
             hasInteracted = true;
-            dialogsManager.AltarInteraction(true);
+            dialogsManager.EnqueueAction(dialogsManager.AltarInteractionTrue);
             demonicAltarController.ToggleDemonicAltar();
+            foreach (var portal in spawnPortal)
+            {
+                portal.ToggleHellGate();
+            }   
+
         }
         else
         {
-            dialogsManager.AltarInteraction(false);
+            dialogsManager.EnqueueAction(dialogsManager.AltarInteractionFalse);
         }
     }
 }

@@ -22,13 +22,13 @@ public class PlayerLoadoutController : MonoBehaviour {
     void Start()
     {
         weapon = GetComponent<Weapon>();
-        AddWeaponToLoadout(WeaponName.Pistol);
+        //AddWeaponToLoadout(WeaponName.Pistol);
         AddWeaponToLoadout(WeaponName.SMG);
         weaponCamera = GameObject.FindWithTag("WeaponCamera");
         EquipWeaponAtIndex(0);
     }
 
-    void AddWeaponToLoadout(WeaponName weaponName)
+    public void AddWeaponToLoadout(WeaponName weaponName)
     {
         bool isWeaponAlreadyEquipped = false;
         foreach (var weaponLoadout in equippedWeapons)
