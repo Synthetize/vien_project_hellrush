@@ -1,11 +1,21 @@
+using System;
 using UnityEngine;
 
 public class GranadeExplosion : MonoBehaviour
 {
     public float explosionRadius = 5f;
-    public int explosionDamage = 25;
+    public int explosionDamage = 50;
+
+    public AudioClip explosionSound;
+
+    public float AudioVolume = 1.0f;
 
     // Update is called once per frame
+
+    void Start()
+    {
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position, Mathf.Clamp01(AudioVolume));
+    }
     void Update()
     {
 

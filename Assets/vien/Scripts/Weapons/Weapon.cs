@@ -125,6 +125,11 @@ public class Weapon : MonoBehaviour {
 
 		Instantiate(definition.muzzleFlashPrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation, _weaponMuzzle.transform);
 
+		if (definition.fireClip != null)
+		{
+			AudioSource.PlayClipAtPoint(definition.fireClip, Camera.main.transform.position);
+		}
+
 		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, excludeMask))
 		{
 			GameObject bulletImpact = GameObject.Instantiate(definition.bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
@@ -213,10 +218,16 @@ public class Weapon : MonoBehaviour {
     {
         if (_isReloading) return;
         if (definition.currentMagazineAmmo >= definition.magazineSize) return;
-        if (definition.totalAmmo <= 0) return;
+		if (definition.totalAmmo <= 0) return;
+	
+		if (definition.reloadClip != null)
+		{
+			AudioSource.PlayClipAtPoint(definition.reloadClip, Camera.main.transform.position);
+		}
+		float reloadLength = (definition.reloadClip != null) ? definition.reloadClip.length : definition.reloadTime;
 
         _isReloading = true;
-        _reloadTimer = definition.reloadTime;
+        _reloadTimer = reloadLength;
     }
 
 	void CompleteReload()
@@ -225,6 +236,7 @@ public class Weapon : MonoBehaviour {
 		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
 		definition.currentMagazineAmmo += ammoToLoad;
 		definition.totalAmmo -= ammoToLoad;
+
 		_isReloading = false;
 		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 	}
@@ -239,6 +251,10 @@ public class Weapon : MonoBehaviour {
 		//Debug.Log("Equipped weapon: " + _weaponMuzzle);
 		hudController.UpdateAmmo(definition.currentMagazineAmmo, definition.totalAmmo);
 		_weaponMuzzle = weaponMuzzle;
+		if (definition.weaponEquip != null)
+		{
+			AudioSource.PlayClipAtPoint(definition.weaponEquip, Camera.main.transform.position);
+		}
 	}
 
 	void SpawnProjectile()

@@ -14,3 +14,5 @@ DOOM/DOOM2 https://www.spriters-resource.com/ms_dos/doomdoomii/
 EXPLOSION https://www.kindpng.com/imgv/hRRiim_drawn-explosions-sprite-transparent-explosion-sprite-sheet-hd/
 
 CACODEMON https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites
+
+granade launche rhttps://sketchfab.com/3d-models/m79-grenade-launcher-4ff50f2f9f02430093f1e03e959aa889#download

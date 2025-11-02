@@ -33,21 +33,31 @@ public class DialogsManager : MonoBehaviour
 
     public void InitialDialog()
     {
-        speakerImage.enabled = true;
-        textDisplay.enabled = true;
         string text = "That's the altar, let's go to check it out.";
         StartCoroutine(ShowMoreLines(new string[] { text }, 3f, 3f, 0f));
     }
 
     public void AltarDialog()
     {
-        speakerImage.enabled = true;
-        textDisplay.enabled = true;
         string lineOne = "As expected they almost completed the ritual, they are just waiting for the demon king to obtain his full power before summoning him.";
         string lineTwo = "We have to hurry, if they complete the ritual the demon king before it gains its full power.";
         string lineThree = "We need to go into the portals to get the remaining rune to start the ritual.";
         StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo, lineThree }, 0f, 3f, 1f));
     }
+
+    public void AltarInteraction(bool hasEnoughItems)
+    {
+        if (hasEnoughItems)
+        {
+            StartCoroutine(ShowMoreLines(new string[] { "Nice, It's working, I suggest to keep some distance, just in case." }, 0f, 3f, 1f));
+        }
+        else
+        {
+            StartCoroutine(ShowMoreLines(new string[] { "You need to collect both runes to proceed." }, 0f, 3f, 1f));
+        }
+    }
+    
+
     
     IEnumerator ShowMoreLines(string[] lines, float initialDelay, float displayDuration, float betweenDelay)
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
 
-    int itemCount = 0;
+    int itemCount = 2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,10 +15,15 @@ public class PlayerInventory : MonoBehaviour
     {
 
     }
-    
+
 
     public void AddItem()
     {
         itemCount++;
+    }
+    
+    public int GetItemCount()
+    {
+        return itemCount;
     }
 }

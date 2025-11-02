@@ -45,5 +45,6 @@ public class WeaponDefinition : ScriptableObject {
     [Header("FX & Audio")]
     public ParticleSystem muzzleFlashPrefab;
     public AudioClip fireClip;
+    public AudioClip weaponEquip;
     public AudioClip reloadClip;
 }

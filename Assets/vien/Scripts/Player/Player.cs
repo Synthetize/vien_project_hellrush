@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private FPController controller;
     private Weapon weapon;
     private PlayerLoadoutController playerLoadoutController;
+    private AltarInteraction altarInteraction;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
             controller = GetComponent<FPController>();
             weapon = GetComponent<Weapon>();
             playerLoadoutController = GetComponent<PlayerLoadoutController>();
+            altarInteraction = GetComponent<AltarInteraction>();
 
         }
     }
@@ -67,4 +69,6 @@ public class Player : MonoBehaviour
     {
         playerLoadoutController.PreviousWeapon();
     }
+
+
 }

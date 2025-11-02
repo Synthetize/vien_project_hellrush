@@ -22,6 +22,8 @@ public class DemonicAltar_Controller : MonoBehaviour
     private Transform runeCircleTF;
     private Coroutine lightningCor;
     private bool lightningCorRunning;
+    public GameObject demonKingPrefab;
+    public int bossSpawnDelay = 5;
 
     private void Start()
     {
@@ -95,9 +97,18 @@ public class DemonicAltar_Controller : MonoBehaviour
         inTransition = false;
     }
 
+    private IEnumerator SpawnBossAfterSeconds()
+    {
+        Debug.Log("Spawning Demon King in " + bossSpawnDelay + " seconds...");
+        yield return new WaitForSeconds(bossSpawnDelay);
+        Instantiate(demonKingPrefab, transform.position + new Vector3(7, 5, 0), Quaternion.identity);
+        
+    }
+
     private IEnumerator LightningRotation()
     {
         lightningCorRunning = true;
+        StartCoroutine(SpawnBossAfterSeconds());
 
         yield return new WaitForSeconds(Random.Range(4f, 12f));
 

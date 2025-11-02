@@ -13,27 +13,28 @@ MonoBehaviour:
   m_Name: Glock
   m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
   weaponName: 0
-  weaponPrefab: {fileID: 9058527240146432417, guid: 47e91a7f9c795b24daf3626c4d5ec2fb, type: 3}
+  weaponPrefab: {fileID: 380189219819639200, guid: 86c594d34a100be4688b3324c61b918b, type: 3}
   bulletImpactPrefab: {fileID: 5363221447929924500, guid: 4304956fc2c3574428ddbcbb450f4d2a, type: 3}
-  localTransformPosition: {x: 0.02, y: -0.23, z: 0.18}
-  localTransformRotation: {x: 0, y: 0, z: 0}
-  localTransformScale: {x: 1, y: 1, z: 1}
-  muzzleLocalPosition: {x: 0.0227, y: 0.1168, z: 0.5093}
+  localTransformPosition: {x: 0.609, y: -0.2629995, z: 0.964}
+  localTransformRotation: {x: -90, y: -180, z: -2.005005}
+  localTransformScale: {x: 0.7, y: 0.7, z: 0.7}
+  muzzleLocalPosition: {x: 0, y: 2.306, z: -0.243}
   fireMode: 0
   damage: 55
   fireRate: 10
   spreadDegrees: 1.5
   burstCount: 3
   burstInterval: 0.07
-  magazineSize: 15
+  magazineSize: 20
   totalAmmo: 90
-  reloadTime: 0.5
-  currentMagazineAmmo: 15
+  reloadTime: 1.5
+  currentMagazineAmmo: 20
   useProjectile: 0
   projectilePrefab: {fileID: 4802076708353751960, guid: a5f5a8e656b36da4cbb6070438750005, type: 3}
   projectileSpeed: 100
   projectileGravity: 0
   range: 120
   muzzleFlashPrefab: {fileID: 198792769130808804, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
-  fireClip: {fileID: 0}
-  reloadClip: {fileID: 0}
+  fireClip: {fileID: 8300000, guid: 03d0ed5a4d6b22346965b5b562100bff, type: 3}
+  weaponEquip: {fileID: 8300000, guid: d90f62dbc3f8fcf4580d9da93db9849e, type: 3}
+  reloadClip: {fileID: 8300000, guid: f1d787d9beaa1804bb96e82e53bd2483, type: 3}

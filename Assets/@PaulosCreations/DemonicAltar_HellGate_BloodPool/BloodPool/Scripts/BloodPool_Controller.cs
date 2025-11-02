@@ -29,7 +29,6 @@ public class BloodPool_Controller : MonoBehaviour
 
         poolAudios[1].volume = 0f;
         poolAudios[2].volume = 0f;
-        F_ToggleBloodPool();
     }
 
 

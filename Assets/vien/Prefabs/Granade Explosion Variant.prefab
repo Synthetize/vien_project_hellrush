@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 93485fd5fc2ccf2439cb3239186f6382, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 93485fd5fc2ccf2439cb3239186f6382, type: 3}
       propertyPath: m_IsActive
@@ -166,4 +166,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GranadeExplosion
   explosionRadius: 3
-  explosionDamage: 25
+  explosionDamage: 50
+  explosionSound: {fileID: 8300000, guid: a406134d9b47fc546beef07ae8da6505, type: 3}
