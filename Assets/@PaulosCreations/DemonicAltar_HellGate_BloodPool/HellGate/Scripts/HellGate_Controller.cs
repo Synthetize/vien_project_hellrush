@@ -133,8 +133,7 @@ public class HellGate_Controller : MonoBehaviour
 
         orbParticlesL.Stop();
         orbParticlesR.Stop();
-
-        portalColliderEnabler.SetActive(false);
+        gateCollider.enabled = false;
         while (transitionTimer > 0)
         {
             transitionTimer -= Time.deltaTime * 0.3f;

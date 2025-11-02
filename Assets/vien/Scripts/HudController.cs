@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HudController : MonoBehaviour
 {
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI healthText;
+    public RawImage gameOverImage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,6 +17,10 @@ public class HudController : MonoBehaviour
     void Update()
     {
 
+    }
+    public void ShowGameOver()
+    {
+        gameOverImage.gameObject.SetActive(true);
     }
     
     public void UpdateHealth(int currentHealth)

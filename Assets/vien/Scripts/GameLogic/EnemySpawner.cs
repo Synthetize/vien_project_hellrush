@@ -85,13 +85,14 @@ public class EnemySpawner : MonoBehaviour
         {
             if (!_waveAdvanced)
             {
-                allEnemiesCleared = false;
+
                 // consume the flag and start fade out which will toggle gate when done
                 Debug.Log("update: All enemies cleared, fading out audio and toggling gate.");
                 waveManager.AdvanceWave();
                 _fadeRoutine = StartCoroutine(FadeOutAudioAndToggleGate(audioFadeDuration));
                 _waveAdvanced = true;
             }
+            allEnemiesCleared = false;
         }
     }
 
@@ -130,18 +131,6 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator FadeInAudioAndToggleGate(float duration)
     {
         _isFading = true;
-
-        if (audioSource == null)
-        {
-            // if no audio, toggle gate immediately and exit
-            if (hellGateController != null) hellGateController.ToggleHellGate();
-            _isFading = false;
-            yield break;
-        }
-
-        // open gate immediately when spawning starts
-        if (hellGateController != null) hellGateController.ToggleHellGate();
-
         float targetVol = Mathf.Clamp01(audioSource.volume);
         audioSource.volume = 0f;
         audioSource.Play();

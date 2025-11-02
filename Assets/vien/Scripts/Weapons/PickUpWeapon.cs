@@ -5,6 +5,8 @@ public class PickUpWeapon : MonoBehaviour
     public WeaponName weaponName;
     public AudioClip pickUpSound;
     private PlayerLoadoutController playerLoadoutController;
+    public GameObject nextPortalCollider;
+    private DialogsManager dialogsManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -15,6 +17,7 @@ public class PickUpWeapon : MonoBehaviour
     void Start()
     {
         _initialLocalY = transform.localPosition.y;
+        dialogsManager = FindFirstObjectByType<DialogsManager>();
     }
     void Update()
 	{
@@ -31,8 +34,14 @@ public class PickUpWeapon : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerLoadoutController = other.GetComponent<PlayerLoadoutController>();
+            dialogsManager.EnqueueAction(dialogsManager.WeaponCollected);
             playerLoadoutController.AddWeaponToLoadout(weaponName);
             AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
+            if (nextPortalCollider != null)
+            {
+                nextPortalCollider.GetComponent<Collider>().enabled = true;
+            }
+
             Destroy(gameObject);
         }
 	}

@@ -86,17 +86,24 @@ public class DialogsManager : MonoBehaviour
 
     public void AltarInteractionTrue()
     {
-        StartCoroutine(ShowMoreLines(new string[] { "Great, the ritual has started, now we need to defend the altar from the incoming waves of demons." }, 0f, 3f, 1f));
+        StartCoroutine(ShowMoreLines(new string[] { "Nice, It's working, Keep some distance, just in case" }, 0f, 3f, 1f));
     }
 
     public void AltarInteractionFalse()
     {
-        StartCoroutine(ShowMoreLines(new string[] { "Nice, It's working, Keep some distance, just in case." }, 0f, 3f, 1f));
+        StartCoroutine(ShowMoreLines(new string[] { "We first need to get the two remaining runes." }, 0f, 3f, 1f));
     }
 
     public void FirstWaveCompleted()
     {
         string lineOne = "Good job, go back and go through the next portal to get the other rune.";
+        string lineTwo = "Since the situation is worst than expected, We have send you a little gift to help you. You can find it in your way to the next portal.";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo }, 0f, 3f, 1f));
+    }
+
+    public void WeaponCollected()
+    {
+        string lineOne = "Now it's time to have some fun! [Press 1 or 2 to cycle weapons]";
         StartCoroutine(ShowMoreLines(new string[] { lineOne }, 0f, 3f, 1f));
     }
 
