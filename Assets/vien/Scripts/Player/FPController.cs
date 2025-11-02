@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using Zenject;
+using NUnit.Framework;
 
 [RequireComponent(typeof(CharacterController))]
 public class FPController : MonoBehaviour
@@ -51,6 +52,12 @@ public class FPController : MonoBehaviour
     public bool wasGrounded = false;
     public bool IsGrounded => _characterController.isGrounded;
 
+    [Header("Audio FX")]
+    public AudioClip landSound;
+    public AudioClip walkSound;
+    public AudioClip sprintSound;
+    private AudioSource audioSource;
+
     [Header("Events")]
     public UnityEvent OnLand;
 
@@ -60,6 +67,7 @@ public class FPController : MonoBehaviour
 
 
     public bool Sprinting => SprintInput && CurrentSpeed > 0.1f;
+    bool walking = false;
 
 
     [Header("References")]
@@ -73,7 +81,18 @@ public class FPController : MonoBehaviour
         this._characterController = characterController;
     }
     
-
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (OnLand == null) OnLand = new UnityEvent();
+        OnLand.AddListener(PlayLandSound);
+    }
+    public void PlayLandSound()
+    {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+        if (audioSource == null || landSound == null) return;
+        audioSource.PlayOneShot(landSound);
+    }
 
     void Update()
     {
@@ -88,7 +107,32 @@ public class FPController : MonoBehaviour
             OnLand?.Invoke();
         }
         wasGrounded = IsGrounded;
+
+
+        if (Sprinting && IsGrounded)
+        {
+            Debug.Log("sprinting");
+            audioSource.clip = sprintSound;
+            audioSource.loop = true;
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+        }
+        else if (walking && IsGrounded)
+        {
+            Debug.Log("walking");
+            audioSource.clip = walkSound;
+            audioSource.loop = true;
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+        }
+        else
+        {
+            Debug.Log("stopped");
+            audioSource.Stop();
+        }
     }
+    
+
     
     private void MoveUpdate()
     {
@@ -99,10 +143,12 @@ public class FPController : MonoBehaviour
         if (MoveInput.magnitude > 0)
         {
             CurrentVelocity = Vector3.MoveTowards(CurrentVelocity, motion * MaxSpeed, acceleration * Time.deltaTime);
+            walking = true;
         }
         else
         {
             CurrentVelocity = Vector3.MoveTowards(CurrentVelocity, Vector3.zero, deceleration * Time.deltaTime);
+            walking = false;
         }
 
         //gravity to make the controller stick to the ground
