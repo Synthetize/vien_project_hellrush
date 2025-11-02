@@ -134,7 +134,7 @@ public class Weapon : MonoBehaviour {
 		{
 			GameObject bulletImpact = GameObject.Instantiate(definition.bulletImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
 
-			Destroy(bulletImpact, 0.5f);
+			Destroy(bulletImpact, 1f);
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
 				if (definition.weaponName == WeaponName.Pistol) return true;

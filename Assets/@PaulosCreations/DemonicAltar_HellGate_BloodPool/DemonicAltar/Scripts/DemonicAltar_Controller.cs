@@ -24,6 +24,7 @@ public class DemonicAltar_Controller : MonoBehaviour
     private bool lightningCorRunning;
     public GameObject demonKingPrefab;
     public int bossSpawnDelay = 5;
+    public EnemySpawner enemySpawner;
 
     private void Start()
     {
@@ -99,9 +100,8 @@ public class DemonicAltar_Controller : MonoBehaviour
 
     private IEnumerator SpawnBossAfterSeconds()
     {
-        Debug.Log("Spawning Demon King in " + bossSpawnDelay + " seconds...");
         yield return new WaitForSeconds(bossSpawnDelay);
-        Instantiate(demonKingPrefab, transform.position + new Vector3(7, 5, 0), Quaternion.identity);
+        enemySpawner.StartSpawning();
         
     }
 

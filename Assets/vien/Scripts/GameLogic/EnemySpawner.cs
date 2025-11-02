@@ -1,8 +1,7 @@
-// ...existing code...
 using UnityEngine;
 using System.Collections;
 
-public enum EnemiesToSpawn { CACODEMON, EXECUTIONER, ALL }
+public enum EnemiesToSpawn { CACODEMON, EXECUTIONER, ALL, BOSSWAVE }
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -11,6 +10,10 @@ public class EnemySpawner : MonoBehaviour
 
     public Cacodemon cacodemonPrefab;
     public ExecutionerDemon executionerPrefab;
+    public DemonKing demonKingPrefab;
+
+    [Header("Boss Wave")]
+    public Transform bossSpawnPoint; // point where boss will spawn (assign in Inspector)
 
     [Header("Counts")]
     public int totalCacodemonToSpawn = 10;
@@ -28,9 +31,16 @@ public class EnemySpawner : MonoBehaviour
     bool _isSpawning;
 
     private HellGate_Controller hellGateController;
+    public AudioSource audioSource;
 
     // public flag other systems can read
     [HideInInspector] public bool allEnemiesCleared = false;
+
+    public float audioFadeDuration = 2f; // durata fade in secondi
+    Coroutine _fadeRoutine;
+    bool _isFading;
+
+    bool _bossSpawned = false;
 
     void Start()
     {
@@ -41,8 +51,10 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < transform.childCount; i++) spawnPoints[i] = transform.GetChild(i);
         }
 
+        // initialize counters
         _remainingCacodemon = totalCacodemonToSpawn;
         _remainingExecutioner = totalExecutionerToSpawn;
+        _aliveCount = 0;
 
         // if there's nothing to spawn at all, consider cleared
         if (!HasAnyRemainingToSpawn() && _aliveCount == 0)
@@ -56,34 +68,115 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnOnStart) StartSpawning();
 
-        GameObject parentObj = transform.parent.gameObject;
-        hellGateController = parentObj.GetComponentInChildren<HellGate_Controller>();
-
+        // try get HellGate_Controller from parent
+        if (transform.parent != null)
+        {
+            GameObject parentObj = transform.parent.gameObject;
+            hellGateController = parentObj.GetComponentInChildren<HellGate_Controller>();
+        }
     }
 
-	void Update()
-	{
-		if (allEnemiesCleared)
+    void Update()
+    {
+        if (allEnemiesCleared && !_isFading)
         {
-            hellGateController.ToggleHellGate();
+            // consume the flag and start fade out which will toggle gate when done
             allEnemiesCleared = false;
+            _fadeRoutine = StartCoroutine(FadeOutAudioAndToggleGate(audioFadeDuration));
         }
-	}
+    }
 
-	// call this to begin spawning
-	public void StartSpawning()
+    IEnumerator FadeOutAudioAndToggleGate(float duration)
+    {
+        _isFading = true;
+
+        if (audioSource == null)
+        {
+            if (hellGateController != null) hellGateController.ToggleHellGate();
+            _isFading = false;
+            yield break;
+        }
+
+        float startVol = audioSource.volume;
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVol, 0f, t / Mathf.Max(0.0001f, duration));
+            yield return null;
+        }
+
+        audioSource.volume = 0f;
+        audioSource.Stop();
+
+        // restore original volume for next play (optional)
+        audioSource.volume = startVol;
+
+        if (hellGateController != null) hellGateController.ToggleHellGate();
+
+        _isFading = false;
+        _fadeRoutine = null;
+    }
+
+    IEnumerator FadeInAudioAndToggleGate(float duration)
+    {
+        _isFading = true;
+
+        if (audioSource == null)
+        {
+            // if no audio, toggle gate immediately and exit
+            if (hellGateController != null) hellGateController.ToggleHellGate();
+            _isFading = false;
+            yield break;
+        }
+
+        // open gate immediately when spawning starts
+        if (hellGateController != null) hellGateController.ToggleHellGate();
+
+        float targetVol = Mathf.Clamp01(audioSource.volume);
+        audioSource.volume = 0f;
+        audioSource.Play();
+
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(0f, targetVol, t / Mathf.Max(0.0001f, duration));
+            yield return null;
+        }
+
+        audioSource.volume = targetVol;
+
+        _isFading = false;
+        _fadeRoutine = null;
+    }
+
+    // call this to begin spawning
+    public void StartSpawning()
     {
         if (_isSpawning) return;
 
         // reset state
         _isSpawning = true;
         allEnemiesCleared = false;
+        _bossSpawned = false;
 
-        // ensure remaining counts are initialized (in case Start wasn't used to init)
-        _remainingCacodemon = Mathf.Max(0, _remainingCacodemon == 0 ? totalCacodemonToSpawn : _remainingCacodemon);
-        _remainingExecutioner = Mathf.Max(0, _remainingExecutioner == 0 ? totalExecutionerToSpawn : _remainingExecutioner);
+        // reset remaining counters to configured totals
+        _remainingCacodemon = totalCacodemonToSpawn;
+        _remainingExecutioner = totalExecutionerToSpawn;
+
+        // spawn boss immediately for boss wave if configured
+        if (enemiesToSpawn == EnemiesToSpawn.BOSSWAVE && !_bossSpawned && demonKingPrefab != null && bossSpawnPoint != null)
+        {
+            var bossInstance = Instantiate(demonKingPrefab, bossSpawnPoint.position, bossSpawnPoint.rotation);
+            var bossTracker = bossInstance.gameObject.AddComponent<EnemyTracker>();
+            bossTracker.Init(this);
+            _aliveCount++;
+            _bossSpawned = true;
+        }
 
         _spawnRoutine = StartCoroutine(SpawnLoop());
+        _fadeRoutine = StartCoroutine(FadeInAudioAndToggleGate(audioFadeDuration));
 
         // if nothing to spawn and no alive, mark cleared immediately
         if (!HasAnyRemainingToSpawn() && _aliveCount == 0)
@@ -109,7 +202,11 @@ public class EnemySpawner : MonoBehaviour
 
             // decide what to spawn this tick
             EnemiesToSpawn choice = enemiesToSpawn;
-            if (enemiesToSpawn == EnemiesToSpawn.ALL)
+
+            // for boss wave, spawn normal enemies as ALL behavior
+            if (enemiesToSpawn == EnemiesToSpawn.BOSSWAVE) choice = EnemiesToSpawn.ALL;
+
+            if (choice == EnemiesToSpawn.ALL)
             {
                 // pick a type that still has remaining; if one exhausted, pick the other
                 if (_remainingCacodemon <= 0 && _remainingExecutioner > 0) choice = EnemiesToSpawn.EXECUTIONER;
@@ -151,6 +248,7 @@ public class EnemySpawner : MonoBehaviour
             case EnemiesToSpawn.CACODEMON: return _remainingCacodemon > 0;
             case EnemiesToSpawn.EXECUTIONER: return _remainingExecutioner > 0;
             case EnemiesToSpawn.ALL: return _remainingCacodemon > 0 || _remainingExecutioner > 0;
+            case EnemiesToSpawn.BOSSWAVE: return _remainingCacodemon > 0 || _remainingExecutioner > 0;
             default: return false;
         }
     }
@@ -191,4 +289,3 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 }
-// ...existing code...

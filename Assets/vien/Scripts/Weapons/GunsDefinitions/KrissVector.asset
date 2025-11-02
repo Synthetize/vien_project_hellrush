@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: KrissVector
   m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
   weaponName: 1
-  weaponPrefab: {fileID: 2473573420454191771, guid: 35db303e133388f49b95d2836f5257e1, type: 3}
+  weaponPrefab: {fileID: 5867981943817166200, guid: 6357b2ad88eebac478f94b26bdcd8c23, type: 3}
   bulletImpactPrefab: {fileID: 100002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
-  localTransformPosition: {x: 0.364, y: -0.517, z: 1}
-  localTransformRotation: {x: -90, y: -45, z: -48}
-  localTransformScale: {x: 0.03, y: 0.03, z: 0.03}
-  muzzleLocalPosition: {x: 0.331, y: -0.385, z: 1.736}
+  localTransformPosition: {x: 0.6357422, y: -0.6780005, z: 0.9956665}
+  localTransformRotation: {x: 0, y: 88.853, z: 0}
+  localTransformScale: {x: 0.7, y: 0.7, z: 0.7}
+  muzzleLocalPosition: {x: -2.581, y: 0.393, z: 0}
   fireMode: 1
   damage: 20
   fireRate: 10
@@ -36,4 +36,5 @@ MonoBehaviour:
   range: 120
   muzzleFlashPrefab: {fileID: 198792769130808804, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
   fireClip: {fileID: 0}
+  weaponEquip: {fileID: 0}
   reloadClip: {fileID: 0}

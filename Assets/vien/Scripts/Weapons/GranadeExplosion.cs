@@ -7,6 +7,7 @@ public class GranadeExplosion : MonoBehaviour
     public int explosionDamage = 50;
 
     public AudioClip explosionSound;
+    AudioSource audioSource;
 
     public float AudioVolume = 1.0f;
 
@@ -14,7 +15,7 @@ public class GranadeExplosion : MonoBehaviour
 
     void Start()
     {
-        AudioSource.PlayClipAtPoint(explosionSound, transform.position, Mathf.Clamp01(AudioVolume));
+        // AudioSource.PlayClipAtPoint(explosionSound, transform.position, Mathf.Clamp01(AudioVolume));
     }
     void Update()
     {

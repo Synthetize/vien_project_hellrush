@@ -20,7 +20,7 @@ public class DemonKingFireball : MonoBehaviour
         healthController = FindFirstObjectByType<HealthController>();
         Debug.Log(healthController);
         Destroy(gameObject, fireballLifetime);
-        parentObject = transform.parent.gameObject;
+        //parentObject = transform.parent.gameObject;
 
     }
 

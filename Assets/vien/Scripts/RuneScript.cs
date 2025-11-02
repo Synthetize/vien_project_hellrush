@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class RuneScript : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class RuneScript : MonoBehaviour
     public float floatHalfRange = 0.5f;
     public float floatSpeed = 1f;
     float _initialLocalY;
+    public AudioClip audioSource;
+    public AudioSource audioSourceComponent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,9 +22,9 @@ public class RuneScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-	{
-		MoveUpAndDown();
-	}
+    {
+        MoveUpAndDown();
+    }
 
     void MoveUpAndDown()
     {
@@ -31,13 +34,15 @@ public class RuneScript : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-	{
-		if (other.CompareTag("Player"))
-		{
-			Debug.Log("RuneScript: Player has entered the rune area.");
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("RuneScript: Player has entered the rune area.");
+            AudioSource.PlayClipAtPoint(audioSource, transform.position);
             enemySpawner.StartSpawning();
             playerInventory.AddItem();
-            Destroy(gameObject);
-		}
-	}
+            audioSourceComponent.Play();
+            gameObject.SetActive(false);
+        }
+    }
 }
