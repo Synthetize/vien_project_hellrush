@@ -18,7 +18,7 @@ MonoBehaviour:
   localTransformPosition: {x: 0.6357422, y: -0.6780005, z: 0.9956665}
   localTransformRotation: {x: 0, y: 88.853, z: 0}
   localTransformScale: {x: 0.7, y: 0.7, z: 0.7}
-  muzzleLocalPosition: {x: -2.581, y: 0.393, z: 0}
+  muzzleLocalPosition: {x: -8.71, y: 0.3929996, z: 0.033}
   fireMode: 1
   damage: 20
   fireRate: 10
