@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -28,7 +27,7 @@ public class Cacodemon : MonoBehaviour, IDamageable
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         player = FindFirstObjectByType<Player>();
-        cameraTransform = player.transform.GetChild(0);
+        cameraTransform = player.transform.GetChild(0).GetChild(0);
         playerController = FindFirstObjectByType<FPController>();
         //_shoot_cooldown = 1f / Mathf.Max(0.01f, fireRate);
         if (cameraTransform.tag != "Camera")

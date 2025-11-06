@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     private Weapon weapon;
     private PlayerLoadoutController playerLoadoutController;
     private AltarInteraction altarInteraction;
+    private SensitivitySlider sensitivitySlider;
 
     void Awake()
     {
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
             weapon = GetComponent<Weapon>();
             playerLoadoutController = GetComponent<PlayerLoadoutController>();
             altarInteraction = GetComponent<AltarInteraction>();
+            sensitivitySlider = FindFirstObjectByType<SensitivitySlider>();
 
         }
     }
@@ -69,6 +71,7 @@ public class Player : MonoBehaviour
     {
         playerLoadoutController.PreviousWeapon();
     }
+
 
 
 }

@@ -11,6 +11,7 @@ public class HudController : MonoBehaviour
     void Start()
     {
         
+        
     }
 
     // Update is called once per frame
@@ -25,7 +26,7 @@ public class HudController : MonoBehaviour
     
     public void UpdateHealth(int currentHealth)
     {
-        healthText.text = "Health: " + currentHealth;
+        healthText.text = "HP: " + currentHealth;
     }
     public void UpdateAmmo(int currentAmmo, int maxAmmo)
     {

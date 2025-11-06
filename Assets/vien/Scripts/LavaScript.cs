@@ -20,7 +20,7 @@ public class LavaScript : MonoBehaviour
             var healthController = other.gameObject.GetComponent<HealthController>();
             if (healthController != null)
             {
-                healthController.TakeDamage(100);
+                healthController.TakeDamage(250);
             }
         }
     }

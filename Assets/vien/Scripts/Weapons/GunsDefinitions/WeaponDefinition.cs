@@ -47,4 +47,5 @@ public class WeaponDefinition : ScriptableObject {
     public AudioClip fireClip;
     public AudioClip weaponEquip;
     public AudioClip reloadClip;
+    public float volume = 1f;
 }

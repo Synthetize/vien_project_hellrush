@@ -72,16 +72,18 @@ public class DialogsManager : MonoBehaviour
 
     public void InitialDialog()
     {
-        string text = "That's the altar, let's go to check it out.";
-        StartCoroutine(ShowMoreLines(new string[] { text }, 3f, 3f, 0f));
+        string lineOne = "Soldier, you are the last hope to stop the imminent demon invasion.";
+        string lineTwo = "They are trying to summon again the demon king after his defeat 500 years ago.";
+        string text = "Now hurry and take a look at the demonic altar ahead of you.";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo, text }, 2f, 4f, 0f));
     }
 
     public void AltarDialog()
     {
         string lineOne = "As expected they almost completed the ritual, they are just waiting for the demon king to obtain his full power before summoning him.";
-        string lineTwo = "We have to hurry, if they complete the ritual the demon king before it gains its full power.";
-        string lineThree = "We need to go into the portals to get the remaining rune to start the ritual.";
-        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo, lineThree }, 0f, 3f, 1f));
+        string lineTwo = "We must summon him now before so it will be easier to defeat him.";
+        string lineThree = "We need to retrieve the last two runes. Go through the portal on the left side.";
+        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo, lineThree }, 0f, 4f, 1f));
     }
 
     public void AltarInteractionTrue()
@@ -96,7 +98,7 @@ public class DialogsManager : MonoBehaviour
 
     public void FirstWaveCompleted()
     {
-        string lineOne = "Good job, go back and go through the next portal to get the other rune.";
+        string lineOne = "Good job, now go back..";
         string lineTwo = "Since the situation is worst than expected, We have send you a little gift to help you. You can find it in your way to the next portal.";
         StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo }, 0f, 3f, 1f));
     }
@@ -116,8 +118,8 @@ public class DialogsManager : MonoBehaviour
     public void BossDefeated()
     {
         string lineOne = "You did it! The demon king has been defeated!";
-        string lineTwo = "With his defeat, the dark ritual has been thwarted, and the world is safe once again.";
-        StartCoroutine(ShowMoreLines(new string[] { lineOne, lineTwo }, 0f, 3f, 1f));
+
+        StartCoroutine(ShowMoreLines(new string[] { lineOne }, 0f, 3f, 1f));
     }
 
 }

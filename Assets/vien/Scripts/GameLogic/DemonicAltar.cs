@@ -18,7 +18,7 @@ public class DemonicAltar : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collided with: " + other.name);
+        //Debug.Log("Collided with: " + other.name);
 		if (other.CompareTag("Player") && !dialogTriggered)
         {
             dialogTriggered = true;

@@ -14,6 +14,9 @@ public class Weapon : MonoBehaviour {
 	public HudController hudController;
 	public GameObject weaponCamera;
 	public AudioSource weaponCameraAudioSource;
+
+	public float increasedReloadAudio = 0.2f;
+	public bool enableInput = true;
 	
 
 	[Header("Runtime (readonly)")]
@@ -51,6 +54,11 @@ public class Weapon : MonoBehaviour {
 	}
 	
 	void Update() {
+		if (!enableInput)
+		{
+			weaponCameraAudioSource.Pause();
+			return;
+		}
 		if (_buffs.Count > 0)
 		{
 			bool changed = false;
@@ -152,6 +160,7 @@ public class Weapon : MonoBehaviour {
 
 	public void TryReload()
 	{
+		if (!enableInput) return;
 		int neededAmmo = definition.magazineSize - definition.currentMagazineAmmo;
 		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
 		definition.currentMagazineAmmo += ammoToLoad;
@@ -186,20 +195,35 @@ public class Weapon : MonoBehaviour {
             foreach (var mod in ab.def.modifiers) ApplyMod(mod, applyMul);
     }
 
-    void ApplyMod(StatMod mod, bool applyMulPhase) {
-        if ((mod.op == StatOp.Mul) != applyMulPhase) return; // applica solo nella fase giusta
-        switch (mod.stat) {
+	void ApplyMod(StatMod mod, bool applyMulPhase)
+	{
+		if ((mod.op == StatOp.Mul) != applyMulPhase) return; // applica solo nella fase giusta
+		switch (mod.stat)
+		{
 			case "damage":
-				definition.damage = Apply(definition.damage, mod); 
+				definition.damage = Apply(definition.damage, mod);
 				break;
 			case "fireRate":
-				definition.fireRate = Apply(definition.fireRate, mod); 
+				definition.fireRate = Apply(definition.fireRate, mod);
 				break;
 			case "reloadTime":
-				definition.reloadTime = Apply(definition.reloadTime, mod); 
+				definition.reloadTime = Apply(definition.reloadTime, mod);
 				break;
-            case "magazineSize": definition.magazineSize = Mathf.RoundToInt(Apply(definition.magazineSize, mod)); 
-			break;
+			case "magazineSize":
+				definition.magazineSize = Mathf.RoundToInt(Apply(definition.magazineSize, mod));
+				break;
+		}
+	}
+
+	public void SetInputStatus(bool enable)
+    {
+        enableInput = enable;
+        if (!enable)
+        {
+            AudioListener.pause = true;
+        } else
+        {
+            AudioListener.pause = false;
         }
     }
 
@@ -213,18 +237,20 @@ public class Weapon : MonoBehaviour {
 	
 	public void SetReloading(bool isReloading)
 	{
+		if (!enableInput) return;
 		_isReloading = isReloading;
 	}
 
 	public void StartReload()
-    {
+	{
+		if (!enableInput) return;
         if (_isReloading) return;
         if (definition.currentMagazineAmmo >= definition.magazineSize) return;
 		if (definition.totalAmmo <= 0) return;
 	
 		if (definition.reloadClip != null)
 		{
-			weaponCameraAudioSource.PlayOneShot(definition.reloadClip);
+			weaponCameraAudioSource.PlayOneShot(definition.reloadClip, definition.volume + increasedReloadAudio);
 		}
 		float reloadLength = (definition.reloadClip != null) ? definition.reloadClip.length : definition.reloadTime;
 
@@ -234,6 +260,7 @@ public class Weapon : MonoBehaviour {
 
 	void CompleteReload()
 	{
+		if (!enableInput) return;
 		int neededAmmo = definition.magazineSize - definition.currentMagazineAmmo;
 		int ammoToLoad = Mathf.Min(neededAmmo, definition.totalAmmo);
 		definition.currentMagazineAmmo += ammoToLoad;
@@ -246,6 +273,7 @@ public class Weapon : MonoBehaviour {
 
 	public void SetEquippedWeaponStats(WeaponLoadout newLoadout, GameObject weaponMuzzle)
 	{
+		if (!enableInput) return;
 		_equippedLoadout = newLoadout;
 		definition = _equippedLoadout.definition;
 		modules = _equippedLoadout.defaultModules;
@@ -255,7 +283,14 @@ public class Weapon : MonoBehaviour {
 		_weaponMuzzle = weaponMuzzle;
 		if (definition.weaponEquip != null)
 		{
+			if (weaponCameraAudioSource.isPlaying)
+			{
+				weaponCameraAudioSource.Stop();
+			}
+			weaponCameraAudioSource.volume = definition.volume;
+
 			weaponCameraAudioSource.PlayOneShot(definition.weaponEquip);
+
 		}
 	}
 

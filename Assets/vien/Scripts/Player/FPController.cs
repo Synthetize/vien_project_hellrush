@@ -37,6 +37,8 @@ public class FPController : MonoBehaviour
     public Vector2 LookInput;
     public bool SprintInput;
 
+    public bool enableInput = true;
+
 
     [Header("Camera Parameters")]
     float defaultFOV = 60f;
@@ -90,12 +92,17 @@ public class FPController : MonoBehaviour
         if (audioSource == null) audioSource = GetComponent<AudioSource>();
         if (audioSource == null || landSound == null) return;
         float currentVolume = audioSource.volume;
-        audioSource.PlayOneShot(landSound, currentVolume/2f);
+        audioSource.PlayOneShot(landSound, currentVolume / 2f);
+    }
+    
+    public void SetInputStatus(bool enable)
+    {
+        enableInput = enable;
     }
 
     void Update()
     {
-
+        if (!enableInput) return;
         MoveUpdate();
         LookUpdate();
         CameraFOVUpdate();
@@ -110,7 +117,7 @@ public class FPController : MonoBehaviour
 
         if (Sprinting && IsGrounded)
         {
-            Debug.Log("sprinting");
+            //Debug.Log("sprinting");
             audioSource.clip = sprintSound;
             audioSource.loop = true;
             if (!audioSource.isPlaying)
@@ -118,7 +125,7 @@ public class FPController : MonoBehaviour
         }
         else if (walking && IsGrounded)
         {
-            Debug.Log("walking");
+            //Debug.Log("walking");
             audioSource.clip = walkSound;
             audioSource.loop = true;
             if (!audioSource.isPlaying)
@@ -126,7 +133,7 @@ public class FPController : MonoBehaviour
         }
         else
         {
-            Debug.Log("stopped");
+            //Debug.Log("stopped");
             audioSource.Stop();
         }
     }
@@ -208,6 +215,12 @@ public class FPController : MonoBehaviour
 
         VerticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y * gravityScale);
         timedJumps += 1;
+    }
+
+    public void SetSensitivity(float newSensitivity)
+    {
+        Debug.Log("Setting sensitivity to " + newSensitivity);
+        lookSensitivity = new Vector2(newSensitivity, newSensitivity);
     }
 
 }

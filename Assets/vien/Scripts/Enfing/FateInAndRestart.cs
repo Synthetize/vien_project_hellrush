@@ -68,6 +68,7 @@ public class FateInAndRestart : MonoBehaviour
                 SceneManager.LoadScene(sceneName);
             else
                 Debug.LogWarning("FateInAndRestart: sceneName vuoto, nessuna scena caricata.");
+                Application.Quit();
         }
         else
         {

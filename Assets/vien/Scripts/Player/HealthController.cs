@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HealthController : MonoBehaviour
 {
-    public int maxHealth = 100;
+    public int maxHealth = 200;
     public int currentHealth;
     private HudController hudController;
 
@@ -14,10 +14,11 @@ public class HealthController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentHealth = 1000;
+        currentHealth = maxHealth;
         hudController = FindFirstObjectByType<HudController>();
         player = GetComponent<Player>();
         audioListener = FindFirstObjectByType<AudioListener>();
+        hudController.UpdateHealth(currentHealth);
     }
 
     // Update is called once per frame

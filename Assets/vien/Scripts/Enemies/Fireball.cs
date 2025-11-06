@@ -13,6 +13,7 @@ public class Fireball : MonoBehaviour
     Animator animator;
     Rigidbody rb;
     Camera FPCamera;
+    public float negativeYOffset = 2;
     void Start()
     {
         fPController = FindFirstObjectByType<FPController>();
@@ -20,7 +21,7 @@ public class Fireball : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         FPCamera = fPController.GetComponentInChildren<Camera>();
         healthController = FindFirstObjectByType<HealthController>();
-        Debug.Log(healthController);
+        //Debug.Log(healthController);
         Destroy(gameObject, fireballLifetime);
 
     }
@@ -30,9 +31,12 @@ public class Fireball : MonoBehaviour
     {
         if (fPController != null)
         {
-            // Move the fireball towards the player
-            rb.linearVelocity = (FPCamera.transform.position - transform.position).normalized * speed;
+            // Move the fireball towards the player (don't modify the camera's transform directly)
+            Transform cameraTransform = FPCamera.transform;
+            Vector3 targetPosition = cameraTransform.position;
+            targetPosition.y -= negativeYOffset;
 
+            rb.linearVelocity = (targetPosition - transform.position).normalized * speed;
         }
     }
 
@@ -41,9 +45,10 @@ public class Fireball : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //animator.SetTrigger("OnExplosion");
-            Destroy(gameObject, 0.1f);
             healthController.TakeDamage(damage);
-            Debug.Log("Fireball hit " + other.name);
+            Debug.Log("Fireball hit " + other.name + " for " + damage + " damage.");
+            Destroy(gameObject);
+
         }
         
 	}

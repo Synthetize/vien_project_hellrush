@@ -21,14 +21,14 @@ MonoBehaviour:
   muzzleLocalPosition: {x: 0, y: 2.306, z: -0.243}
   fireMode: 0
   damage: 55
-  fireRate: 10
+  fireRate: 2
   spreadDegrees: 1.5
   burstCount: 3
   burstInterval: 0.07
-  magazineSize: 20
-  totalAmmo: 90
+  magazineSize: 10
+  totalAmmo: 999
   reloadTime: 1.5
-  currentMagazineAmmo: 20
+  currentMagazineAmmo: 10
   useProjectile: 0
   projectilePrefab: {fileID: 4802076708353751960, guid: a5f5a8e656b36da4cbb6070438750005, type: 3}
   projectileSpeed: 100
@@ -38,3 +38,4 @@ MonoBehaviour:
   fireClip: {fileID: 8300000, guid: 03d0ed5a4d6b22346965b5b562100bff, type: 3}
   weaponEquip: {fileID: 8300000, guid: d90f62dbc3f8fcf4580d9da93db9849e, type: 3}
   reloadClip: {fileID: 8300000, guid: f1d787d9beaa1804bb96e82e53bd2483, type: 3}
+  volume: 0.1

@@ -87,7 +87,7 @@ public class EnemySpawner : MonoBehaviour
             {
 
                 // consume the flag and start fade out which will toggle gate when done
-                Debug.Log("update: All enemies cleared, fading out audio and toggling gate.");
+                //Debug.Log("update: All enemies cleared, fading out audio and toggling gate.");
                 waveManager.AdvanceWave();
                 _fadeRoutine = StartCoroutine(FadeOutAudioAndToggleGate(audioFadeDuration));
                 _waveAdvanced = true;
@@ -272,7 +272,7 @@ public class EnemySpawner : MonoBehaviour
         if (!HasAnyRemainingToSpawn() && _aliveCount == 0)
         {
             allEnemiesCleared = true;
-            Debug.Log("EnemySpawner: All enemies cleared.");
+            //Debug.Log("EnemySpawner: All enemies cleared.");
         }
     }
 
