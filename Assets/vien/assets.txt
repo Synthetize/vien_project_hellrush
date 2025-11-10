@@ -1,20 +1,13 @@
-KrissVector: https://sketchfab.com/3d-models/kriss-vector-79c37c9eedc444d8a146043045e7cf3e#download
+CACODEMON: https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites
+DEMON ENEMY PACK: https://kbpixelart.itch.io/demon-enemy-pack-remake
+GRANADE LAUNCHER: rhttps://sketchfab.com/3d-models/m79-grenade-launcher-4ff50f2f9f02430093f1e03e959aa889#download
+FIRE EFFECTS: https://assetstore.unity.com/packages/vfx/particles/fire-explosions/free-stylizedvfx-fire-pack-321082
+ALTAR/HELLGATES: https://assetstore.unity.com/packages/3d/environments/fantasy/altar-hellgate-bloodpool-101442
+FOOTSTEPS: https://assetstore.unity.com/packages/audio/sound-fx/foley/footsteps-essentials-189879
+ENVIRONMENTS: https://assetstore.unity.com/packages/audio/sound-fx/foley/footsteps-essentials-189879
+M4 WEAPON AND SOUND: https://assetstore.unity.com/packages/package/178197
+PICKABLE ROCKS: https://assetstore.unity.com/packages/package/178197
+GRANADE EXPLOSION: https://assetstore.unity.com/packages/package/5669
+SOUNDTRACK DIRECTLY FROM DOOM ETERNAL
 
-Modular Vector: https://sketchfab.com/3d-models/kriss-vector-79c37c9eedc444d8a146043045e7cf3e#download
 
-glock https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d
-
-
-projectile sparks https://www.pngwing.com/en/free-png-dkhhf
-
-fireball https://nyknck.itch.io/fireball-animation/download/eyJleHBpcmVzIjoxNzYxNTk0NTE5LCJpZCI6MzkwNzU0fQ%3d%3d%2edyWgV2OkXbr%2bnODT7C4YdF3OEow%3d
-
-DOOM/DOOM2 https://www.spriters-resource.com/ms_dos/doomdoomii/
-
-EXPLOSION https://www.kindpng.com/imgv/hRRiim_drawn-explosions-sprite-transparent-explosion-sprite-sheet-hd/
-
-CACODEMON https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites
-
-granade launche rhttps://sketchfab.com/3d-models/m79-grenade-launcher-4ff50f2f9f02430093f1e03e959aa889#download
-
-https://sketchfab.com/3d-models/m79-grenade-launcher-4ff50f2f9f02430093f1e03e959aa889#download
